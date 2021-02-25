@@ -234,6 +234,7 @@ export interface GigyaSdkAccountInfoType extends GigyaSdkLoginType {
   emails?: { verified: string[]; unverified: string[] }
   loginIDs?: { username: string; emails: string[]; unverifiedEmails: string[] }
   isLockedOut?: boolean
+  id_token?: string
 }
 
 export interface GigyaSdkRegisteredAccountType extends GigyaSdkAccountInfoType {
