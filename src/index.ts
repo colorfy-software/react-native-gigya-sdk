@@ -10,6 +10,7 @@ const GigyaSdk = {
   // changePassword:
   // deleteAccount:
   finalizeRegistration: core.finalizeRegistration,
+  getAccount: core.getAccount,
   getAccountInfo: core.getAccountInfo,
   getAllSchemas: core.getAllSchemas,
   getConflictingAccount: core.getConflictingAccount,

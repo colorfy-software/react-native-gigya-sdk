@@ -286,7 +286,6 @@ class GigyaSdk: NSObject {
             reject("getAccountErrorJSON", "{}", error)
           }
         case .failure(let getUserError):
-            // Login failure.
           reject("getAccountErrorJSON", "{}", getUserError)
       }
     }
