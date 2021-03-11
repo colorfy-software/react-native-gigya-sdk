@@ -12,14 +12,14 @@ type OptionsType = {
   extraProfileFields?: string
 }
 
-export default function (
+export default function <OutputType extends GigyaSdkAccountInfoType>(
   options?: OptionsType
-): Promise<GigyaSdkAccountInfoType> {
+): Promise<OutputType> {
   return new Promise(async (resolve, reject) => {
     try {
       const state = await getState()
 
-      const response = await sendApiCall<GigyaSdkAccountInfoType, OptionsType>(
+      const response = await sendApiCall<OutputType, OptionsType>(
         'accounts.getAccountInfo',
         {
           ...(options?.noUID && {

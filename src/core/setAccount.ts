@@ -2,11 +2,11 @@ import { NativeModules } from 'react-native'
 const { GigyaSdk } = NativeModules
 
 import handleSdkCall from '../internals/handleSdkCall'
-import type { GigyaSdkApiResponseType } from '../types'
 
-export default function <DataType extends Record<string | number, unknown>>(
-  data: DataType
-): Promise<unknown> {
+export default function <
+  OutputType,
+  DataType extends Record<string | number, unknown>
+>(data: DataType): Promise<OutputType> {
   return new Promise(async (resolve, reject) => {
     let values = data
 
@@ -17,7 +17,7 @@ export default function <DataType extends Record<string | number, unknown>>(
         }
       }
 
-      const response = await handleSdkCall<GigyaSdkApiResponseType>(
+      const response = await handleSdkCall<OutputType>(
         GigyaSdk.setAccount(JSON.stringify(values))
       )
 
