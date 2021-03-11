@@ -151,15 +151,15 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setAccount(final String params, final Promise promise) {
         try {
-            mGigya.setAccount(parseParamsString(params), new GigyaCallback<GigyaApiResponse>() {
+            mGigya.setAccount(parseParamsString(params), new GigyaCallback<GigyaAccount>() {
                 @Override
                 public void onError(GigyaError gigyaError) {
                     promise.reject("setAccountError", gigyaError.getData());
                 }
 
                 @Override
-                public void onSuccess(GigyaApiResponse gigyaApiResponse) {
-                    promise.resolve(gigyaApiResponse.asJson());
+                public void onSuccess(GigyaAccount gigyaAccount) {
+                    promise.resolve(accountToJSONString(gigyaAccount));
                 }
             });
         } catch(Exception e) {
