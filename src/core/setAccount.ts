@@ -5,7 +5,7 @@ import handleSdkCall from '../internals/handleSdkCall'
 
 export default function <
   OutputType,
-  DataType extends Record<string | number, unknown>
+  DataType = Record<string | number, unknown>
 >(data: DataType): Promise<OutputType> {
   return new Promise(async (resolve, reject) => {
     let values = data
