@@ -54,7 +54,7 @@ type InternalOutputType =
       error?: GigyaSdkErrorType
       account?: GigyaSdkAccountInfoType | GigyaSdkRegisteredAccountType
     }
-  | { handled: true; regTokenExpired: boolean; error?: GigyaSdkErrorType }
+  | { handled: true; regTokenExpired: true; error: GigyaSdkErrorType }
   | {
       handled: true
       actionRequired: ActionRequiredType
@@ -73,6 +73,17 @@ type OutputType = {
   error?: GigyaSdkErrorType
   account?: GigyaSdkAccountInfoType | GigyaSdkRegisteredAccountType
 }
+
+const handleExpiredRegToken = (
+  error?: GigyaSdkErrorType
+): Promise<InternalOutputType> =>
+  new Promise(async (resolve) => {
+    resolve({
+      handled: true,
+      regTokenExpired: true,
+      error,
+    })
+  })
 
 const handlePendingVerification = (
   error?: GigyaSdkErrorType,
@@ -165,7 +176,7 @@ const onConsentSchemasAcceptance = (
     }
   })
 
-const handlePendingRegistrationOrVerification = (
+const handlePendingRegistration = (
   error?: GigyaSdkErrorType,
   options?: OptionsType
 ): Promise<InternalOutputType> =>
@@ -238,6 +249,11 @@ export default function (
         return resolve(output)
       }
 
+      if (!state.regToken?.isStillValid) {
+        output = await handleExpiredRegToken(error)
+        return resolve(output as OutputType)
+      }
+
       if (
         error?.payload?.errorCode !== GigyaSdkErrorCodes.ConflictingAccount &&
         error?.code === GigyaSdkErrors.ConflictingAccount
@@ -256,15 +272,14 @@ export default function (
       }
 
       switch (error?.payload?.errorCode) {
+        case GigyaSdkErrorCodes.PendingRegistration:
+          output = await handlePendingRegistration(error, options)
+          break
         case GigyaSdkErrorCodes.PendingVerification:
           output = await handlePendingVerification(error)
           break
         case GigyaSdkErrorCodes.ConflictingAccount:
           output = await handleConflictingAccount(error)
-          break
-        case GigyaSdkErrorCodes.PendingRegistration:
-        case GigyaSdkErrorCodes.PendingVerification:
-          output = await handlePendingRegistrationOrVerification(error, options)
           break
         default:
           break

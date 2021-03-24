@@ -17,19 +17,22 @@ export default function (
   return new Promise<void>(async (resolve, reject) => {
     try {
       const state = await getState()
+      const incomingRegToken = error?.payload?.regToken
+      const existingRegToken = state.regToken?.value
+
+      const value = incomingRegToken || existingRegToken
+      const expirationDate =
+        incomingRegToken && incomingRegToken !== existingRegToken
+          ? new Date(new Date().setHours(new Date().getHours() + 1))
+          : state.regToken?.expirationDate
+      const isStillValid =
+        expirationDate &&
+        new Date(expirationDate).getTime() >= new Date().getTime()
+
       await setState({
         error: error ?? state.error,
         authenticationAttempt: { type },
-        regToken: {
-          value: error?.payload?.regToken ?? state.regToken?.value,
-          expirationDate: error?.payload?.regToken
-            ? new Date(new Date().setHours(new Date().getHours() + 1))
-            : state.regToken?.expirationDate,
-          isStillValid: error?.payload?.regToken
-            ? true
-            : new Date().getTime() >=
-              new Date(state.regToken?.expirationDate as Date).getTime(),
-        },
+        regToken: { value, expirationDate, isStillValid },
       })
 
       resolve()
