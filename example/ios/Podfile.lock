@@ -239,7 +239,7 @@ PODS:
   - React-jsinspector (0.63.4)
   - react-native-encrypted-storage (4.0.2):
     - React-Core
-  - react-native-gigya-sdk (0.1.0):
+  - react-native-gigya-sdk (0.2.1):
     - Gigya
     - React-Core
   - React-RCTActionSheet (0.63.4):
@@ -461,7 +461,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
   react-native-encrypted-storage: e78d848ce0fb663c2ce306e37921d026809322e6
-  react-native-gigya-sdk: 7d830ef2b71a6e7d4282c9e7351335319a1a65ea
+  react-native-gigya-sdk: b3d027c00ffdb294a6837bd0e1d7f41cc8ddf27d
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
   React-RCTAnimation: 1bde3ecc0c104c55df246eda516e0deb03c4e49b
   React-RCTBlob: a97d378b527740cc667e03ebfa183a75231ab0f0
@@ -477,4 +477,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: b2db6462a7e82372eebb69b6a9f873dec0190cd5
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.10.1

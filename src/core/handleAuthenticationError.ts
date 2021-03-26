@@ -47,18 +47,21 @@ type ActionRequiredType =
 type InternalOutputType =
   | {
       handled: false
-      error?: GigyaSdkErrorType
+      error: GigyaSdkErrorType | undefined
     }
   | {
       handled: true
-      error?: GigyaSdkErrorType
-      account?: GigyaSdkAccountInfoType | GigyaSdkRegisteredAccountType
+      account: GigyaSdkAccountInfoType | GigyaSdkRegisteredAccountType
     }
-  | { handled: true; regTokenExpired: true; error: GigyaSdkErrorType }
+  | {
+      handled: true
+      regTokenExpired: true
+      error: GigyaSdkErrorType | undefined
+    }
   | {
       handled: true
       actionRequired: ActionRequiredType
-      error?: GigyaSdkErrorType
+      error: GigyaSdkErrorType | undefined
     }
 
 type OutputType = {
@@ -70,7 +73,7 @@ type OutputType = {
     loginProviders?: GigyaSdkConflictingAccountType['loginProviders']
     type: 'acceptToS' | 'conflictingAccount' | 'emailVerification'
   }
-  error?: GigyaSdkErrorType
+  error: GigyaSdkErrorType | undefined
   account?: GigyaSdkAccountInfoType | GigyaSdkRegisteredAccountType
 }
 
@@ -86,15 +89,14 @@ const handleExpiredRegToken = (
   })
 
 const handlePendingVerification = (
-  error?: GigyaSdkErrorType,
-  options?: { noError: boolean }
+  error?: GigyaSdkErrorType
 ): Promise<InternalOutputType> =>
   new Promise(async (resolve) => {
     await resendVerificationEmail({ noUID: true })
     resolve({
       actionRequired: { type: 'emailVerification' },
       handled: true,
-      ...(!options?.noError && { error }),
+      error,
     })
   })
 
@@ -108,6 +110,7 @@ const handleConflictingAccount = (
         : await getConflictingAccount()
 
       resolve({
+        error,
         handled: true,
         actionRequired: {
           type: 'conflictingAccount',
@@ -117,6 +120,7 @@ const handleConflictingAccount = (
       })
     } catch (e) {
       resolve({
+        error,
         handled: true,
         actionRequired: {
           type: 'conflictingAccount',
@@ -142,9 +146,7 @@ const onConsentSchemasAcceptance = (
       const account = await getAccountInfo({ noUID: true })
 
       if (!account.isVerified) {
-        const output = await handlePendingVerification(state.error, {
-          noError: true,
-        })
+        const output = await handlePendingVerification(state.error)
         return resolve(output)
       }
 
