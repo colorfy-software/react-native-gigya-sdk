@@ -1,26 +1,37 @@
-# react-native-gigya-sdk
+<h1 align="center">
+  <a href="https://github.com/colorfy-software/react-native-modalfy" target="_blank" rel="noopener noreferrer">
+    🌤 React Native Gigya SDK
+  </a>
+</h1>
 
-**SAP CDC/Gigya SDK for your React Native applications.**
+<h4 align="center">
+  <strong>SAP CDC/Gigya SDK for your React Native applications.</strong>
+</h4>
 
----
-
-## ❗ Disclaimer
-
-Please be advised this library is still in very early stages.
-
-Only some critical functions from the Gigya `Core` package have been ported.
-
-We'll try to provide better docs & examples as soon as we can.
-
-PRs are more than welcome!
+<p align="center">
+  <a href="https://github.com/colorfy-software/react-native-gigya-sdk/actions">
+    <img src="https://github.com/colorfy-software/react-native-gigya-sdk/workflows/Lint%20&%20Type/badge.svg?branch=main" alt="Current GitHub Actions build status." />
+  </a>
+  <a href="https://www.npmjs.org/package/react-native-gigya-sdk">
+    <img src="https://badge.fury.io/js/react-native-gigya-sdk.svg" alt="Current npm package version." />
+  </a>
+  <a href="https://www.npmjs.org/package/react-native-gigya-sdk">
+    <img src="https://img.shields.io/npm/dm/react-native-gigya-sdk.svg?maxAge=2592000" alt="Monthly npm downloads." />
+  </a>
+  <a href="https://colorfy-software.gitbook.io/react-native-gigya-sdk/contributing">
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs welcome!" />
+  </a>
+</p>
 
 ## 🏗️ Installation
 
-Install the library & its dependencies:
+1. Install the library & its dependency:
 
 ```sh
-yarn add react-native-gigya-sdk react-native-encrypted-storage base-64
+yarn add react-native-gigya-sdk base-64
 ```
+
+2. If you haven't do so already, install a persistent storage library (like [EncryptedStorage](https://github.com/emeraldsanto/react-native-encrypted-storage)) as you'll need to provide it during set up. **Just make sure your library exposes `getItem()` and `setItem()` functions.**
 
 ### iOS
 
@@ -78,23 +89,29 @@ buildscript {
 ## 💻 Usage
 
 You can now initialize the SDK with your [**`apiKey`**](https://developers.gigya.com/display/GD/APIs+and+SDKs#APIsandSDKs-APIKeyandSiteSetup),
-[**`dataCenter`**](https://developers.gigya.com/display/GD/Finding+Your+Data+Center) (***both required***), app
-[**`lang`**](https://developers.gigya.com/display/GD/Advanced+Customizations+and+Localization) and desired
-[**`encryptedStorageKey`**](https://github.com/emeraldsanto/react-native-encrypted-storage#usage).
+[**`dataCenter`**](https://developers.gigya.com/display/GD/Finding+Your+Data+Center), app
+[**`lang`**](https://developers.gigya.com/display/GD/Advanced+Customizations+and+Localization),
+**`storage`** solution & desired **storageKey**.
+
+❗ **Please make sure your storage library exposes `getItem()` and `setItem()` functions.**
+
+
 
 ```js
-import GigyaSDK from 'react-native-gigya-sdk'
+import GigyaSdk from 'react-native-gigya-sdk'
+import EncryptedStorage from 'react-native-encrypted-storage'
 
-// Before anything we initialize the SDK
-GigyaSDK.init({
+// Before anything we initialize the SDK.
+GigyaSdk.init({
   lang: 'en',
   apiKey: 'GIGYA_API_KEY',
   dataCenter: 'eu1.gigya.com',
-  encryptedStorageKey: 'ENCRYPTED_STORAGE_KEY'
+  storage: EncryptedStorage,
+  storageKey: 'STORAGE_KEY'
 })
 
-// Now we can use it
-const myAccount = await GigyaSDK.login(email, password)
+// Now we can use it.
+const myAccount = await GigyaSdk.login(email, password)
 ```
 
 ## 🤝 Contributing

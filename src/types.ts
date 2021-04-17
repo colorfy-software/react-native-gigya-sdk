@@ -4,6 +4,10 @@ export interface GigyaSdkStateType {
   lang: string
   error?: GigyaSdkErrorType
   storageKey: string
+  storage?: {
+    getItem: (key: string) => string | null | Promise<string | null>
+    setItem: (key: string, value: string) => any
+  }
   authenticationAttempt?: {
     type?: 'apple' | 'email' | 'facebook'
   }

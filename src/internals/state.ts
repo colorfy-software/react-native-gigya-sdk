@@ -1,5 +1,3 @@
-import EncryptedStorage from 'react-native-encrypted-storage'
-
 import type { GigyaSdkStateType } from '../types'
 
 import getState from '../core/getState'
@@ -19,12 +17,11 @@ export function setState(
   return new Promise(async (resolve, reject) => {
     try {
       const oldState = await getState()
-
       const newState = { ...oldState, ...data }
+      const setItem = data.storage?.setItem || oldState.storage?.setItem
 
-      await EncryptedStorage.setItem(
-        newState.encryptedStorageKey,
-        JSON.stringify(newState)
+      await Promise.resolve(
+        setItem?.(newState.storageKey, JSON.stringify(newState))
       )
 
       state = newState

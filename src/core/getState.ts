@@ -1,5 +1,3 @@
-import EncryptedStorage from 'react-native-encrypted-storage'
-
 import type { GigyaSdkStateType } from '../types'
 
 import { state, initialState } from '../internals/state'
@@ -19,7 +17,7 @@ export default function (): Promise<GigyaSdkStateType> {
         let persistedState = null
 
         try {
-          const data = await EncryptedStorage.getItem(storeKey)
+          const data = await Promise.resolve(state.storage?.getItem?.(storeKey))
           if (data) {
             persistedState = JSON.parse(data) as GigyaSdkStateType
           }

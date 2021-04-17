@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react'
-
+import GigyaSdk from 'react-native-gigya-sdk'
+import EncryptedStorage from 'react-native-encrypted-storage'
 import { Button, StyleSheet, Text, View } from 'react-native'
-
-import GigyaSDK from 'react-native-gigya-sdk'
 
 const CONFIG = {
   LANG: 'en',
   API_KEY: '__GIGYA_API_KEY__',
-  DATA_CENTER: 'eu1.gigya.com',
+  DATA_CENTER: '__GIGYA_DATA_CENTER', // eg: 'eu1.gigya.com'
   STORAGE_KEY: 'GigyaSdkEncryptedStorageKey',
 
   EMAIL: '',
@@ -18,14 +17,15 @@ export default function App() {
   useEffect(() => {
     const asyncGigyaPlayground = async () => {
       try {
-        await GigyaSDK.init({
+        await GigyaSdk.init({
           lang: CONFIG.LANG,
           apiKey: CONFIG.API_KEY,
+          storage: EncryptedStorage,
           dataCenter: CONFIG.DATA_CENTER,
           storageKey: CONFIG.STORAGE_KEY,
         })
 
-        const gigyaSdkState = await GigyaSDK.getState()
+        const gigyaSdkState = await GigyaSdk.getState()
 
         console.log('👀', { gigyaSdkState })
       } catch (e) {
@@ -44,10 +44,10 @@ export default function App() {
         title="1. Register account"
         onPress={async () => {
           try {
-            await GigyaSDK.registerAccount(CONFIG.EMAIL, CONFIG.PASSWORD)
+            await GigyaSdk.registerAccount(CONFIG.EMAIL, CONFIG.PASSWORD)
           } catch (e) {
             try {
-              const output = await GigyaSDK.handleAuthenticationError('email', {
+              const output = await GigyaSdk.handleAuthenticationError('email', {
                 isRegistration: true,
               })
 
@@ -65,11 +65,11 @@ export default function App() {
         title="2. I've validated my account, login now"
         onPress={async () => {
           try {
-            const account = await GigyaSDK.login(CONFIG.EMAIL, CONFIG.PASSWORD)
+            const account = await GigyaSdk.login(CONFIG.EMAIL, CONFIG.PASSWORD)
             console.log('🥳', { account })
           } catch (e) {
             try {
-              const output = await GigyaSDK.handleAuthenticationError('email', {
+              const output = await GigyaSdk.handleAuthenticationError('email', {
                 isRegistration: true,
               })
 
@@ -87,7 +87,7 @@ export default function App() {
         title="3. Is logged in"
         onPress={async () => {
           try {
-            const isLoggedIn = await GigyaSDK.isLoggedIn()
+            const isLoggedIn = await GigyaSdk.isLoggedIn()
             console.log('🤔', { isLoggedIn })
           } catch (e) {
             console.log('❌ IS LOGGED IN REJECTED', e)
@@ -101,7 +101,7 @@ export default function App() {
         title="4. Get account info"
         onPress={async () => {
           try {
-            const accountInfo = await GigyaSDK.getAccountInfo({
+            const accountInfo = await GigyaSdk.getAccountInfo({
               include:
                 'id_token,profile,data,subscriptions,isLockedOut,lastLoginLocation,preferences',
               extraProfileFields: 'phones',

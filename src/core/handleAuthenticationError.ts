@@ -223,9 +223,9 @@ const handlePendingRegistration = (
           } catch (e) {}
         }
 
-        await clearErrorState()
+        resolve({ handled: true, account: response })
 
-        return resolve({ handled: true, account: response })
+        await clearErrorState()
       }
 
       resolve({ handled: false, error })

@@ -10,6 +10,7 @@ interface ConfigType {
   lang?: GigyaSdkStateType['lang']
   apiKey: GigyaSdkStateType['apiKey']
   storageKey?: GigyaSdkStateType['storageKey']
+  storage: NonNullable<GigyaSdkStateType['storage']>
 }
 
 export default function (config: ConfigType): Promise<boolean> {
@@ -17,6 +18,7 @@ export default function (config: ConfigType): Promise<boolean> {
     try {
       const newState: Partial<GigyaSdkStateType> = {
         apiKey: config.apiKey,
+        storage: config.storage,
         lang: config.lang || initialState.lang,
         storageKey: config.storageKey,
       }
