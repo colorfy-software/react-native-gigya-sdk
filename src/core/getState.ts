@@ -30,14 +30,14 @@ export default function (): Promise<GigyaSdkStateType> {
         return persistedState
       }
 
-      output = await rehydrateState(state.encryptedStorageKey)
+      output = await rehydrateState(state.storageKey)
 
       if (
-        output?.encryptedStorageKey &&
-        output?.encryptedStorageKey !== state.encryptedStorageKey &&
-        state?.encryptedStorageKey === initialState.encryptedStorageKey
+        output?.storageKey &&
+        output?.storageKey !== state.storageKey &&
+        state?.storageKey === initialState.storageKey
       ) {
-        output = await rehydrateState(output?.encryptedStorageKey as string)
+        output = await rehydrateState(output?.storageKey as string)
       }
 
       resolve(output || initialState)

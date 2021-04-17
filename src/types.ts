@@ -1,9 +1,9 @@
 export interface GigyaSdkStateType {
   apiKey: string
   UID: string
-  encryptedStorageKey: string
   lang: string
   error?: GigyaSdkErrorType
+  storageKey: string
   authenticationAttempt?: {
     type?: 'apple' | 'email' | 'facebook'
   }

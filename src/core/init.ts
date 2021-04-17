@@ -9,7 +9,7 @@ interface ConfigType {
   dataCenter: string
   lang?: GigyaSdkStateType['lang']
   apiKey: GigyaSdkStateType['apiKey']
-  encryptedStorageKey?: GigyaSdkStateType['encryptedStorageKey']
+  storageKey?: GigyaSdkStateType['storageKey']
 }
 
 export default function (config: ConfigType): Promise<boolean> {
@@ -18,7 +18,7 @@ export default function (config: ConfigType): Promise<boolean> {
       const newState: Partial<GigyaSdkStateType> = {
         apiKey: config.apiKey,
         lang: config.lang || initialState.lang,
-        encryptedStorageKey: config.encryptedStorageKey,
+        storageKey: config.storageKey,
       }
 
       await setState(newState)

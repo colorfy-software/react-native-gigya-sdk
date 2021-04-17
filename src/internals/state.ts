@@ -8,7 +8,7 @@ export const initialState: GigyaSdkStateType = {
   UID: '',
   lang: 'en',
   apiKey: '',
-  encryptedStorageKey: 'GigyaSdkState',
+  storageKey: 'GigyaSdkState',
 }
 
 export let state: GigyaSdkStateType = initialState

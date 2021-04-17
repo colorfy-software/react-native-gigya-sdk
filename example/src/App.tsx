@@ -8,7 +8,7 @@ const CONFIG = {
   LANG: 'en',
   API_KEY: '__GIGYA_API_KEY__',
   DATA_CENTER: 'eu1.gigya.com',
-  ENCRYPTED_STORAGE_KEY: 'GigyaSdkEncryptedStorageKey',
+  STORAGE_KEY: 'GigyaSdkEncryptedStorageKey',
 
   EMAIL: '',
   PASSWORD: '',
@@ -22,7 +22,7 @@ export default function App() {
           lang: CONFIG.LANG,
           apiKey: CONFIG.API_KEY,
           dataCenter: CONFIG.DATA_CENTER,
-          encryptedStorageKey: CONFIG.ENCRYPTED_STORAGE_KEY,
+          storageKey: CONFIG.STORAGE_KEY,
         })
 
         const gigyaSdkState = await GigyaSDK.getState()
