@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="https://github.com/colorfy-software/react-native-gigya-sdk/actions">
-    <img src="https://github.com/colorfy-software/react-native-gigya-sdk/workflows/Lint%20&%20Type/badge.svg?branch=main" alt="Current GitHub Actions build status." />
+    <img src="https://github.com/colorfy-software/react-native-gigya-sdk/workflows/Test%20Suite/badge.svg?branch=main" alt="Current GitHub Actions build status." />
   </a>
   <a href="https://www.npmjs.org/package/react-native-gigya-sdk">
     <img src="https://badge.fury.io/js/react-native-gigya-sdk.svg" alt="Current npm package version." />
@@ -31,7 +31,7 @@
 yarn add react-native-gigya-sdk base-64
 ```
 
-2. If you haven't do so already, install a persistent storage library (like [EncryptedStorage](https://github.com/emeraldsanto/react-native-encrypted-storage)) as you'll need to provide it during set up. **Just make sure your library exposes `getItem()` and `setItem()` functions.**
+2. If you haven't done so already, install a persistent storage library (like [EncryptedStorage](https://github.com/emeraldsanto/react-native-encrypted-storage)) as you'll need to provide it during setup. **Just make sure your library exposes `getItem()` and `setItem()` functions.**
 
 ### iOS
 
@@ -89,7 +89,7 @@ buildscript {
 ## 💻 Usage
 
 You can now initialize the SDK with your [**`apiKey`**](https://developers.gigya.com/display/GD/APIs+and+SDKs#APIsandSDKs-APIKeyandSiteSetup),
-[**`dataCenter`**](https://developers.gigya.com/display/GD/Finding+Your+Data+Center), app
+[**`dataCenter`**](https://developers.gigya.com/display/GD/Finding+Your+Data+Center), application
 [**`lang`**](https://developers.gigya.com/display/GD/Advanced+Customizations+and+Localization),
 **`storage`** solution & desired **storageKey**.
 
