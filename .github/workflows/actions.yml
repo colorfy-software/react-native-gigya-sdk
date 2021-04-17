@@ -61,6 +61,6 @@ jobs:
         run: yarn install
 
       - name: Run typechecker
-        run: yarn |
+        run: |
           yarn typescript
         id: type
