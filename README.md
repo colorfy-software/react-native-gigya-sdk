@@ -1,5 +1,5 @@
 <h1 align="center">
-  <a href="https://github.com/colorfy-software/react-native-modalfy" target="_blank" rel="noopener noreferrer">
+  <a href="https://github.com/colorfy-software/react-native-gigya-sdk" target="_blank" rel="noopener noreferrer">
     🌤 React Native Gigya SDK
   </a>
 </h1>
