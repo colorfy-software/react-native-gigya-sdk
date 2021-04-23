@@ -25,10 +25,10 @@
 
 ## 🏗️ Installation
 
-1. Install the library & its dependency:
+1. Install the library :
 
 ```sh
-yarn add react-native-gigya-sdk base-64
+yarn add react-native-gigya-sdk
 ```
 
 2. If you haven't done so already, install a persistent storage library (like [EncryptedStorage](https://github.com/emeraldsanto/react-native-encrypted-storage)) as you'll need to provide it during setup. **Just make sure your library exposes `getItem()` and `setItem()` functions.**

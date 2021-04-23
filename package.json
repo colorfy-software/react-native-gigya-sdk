@@ -51,7 +51,7 @@
     "gigya"
   ],
   "repository": "https://github.com/colorfy-software/react-native-gigya-sdk",
-  "author": "Charles Mangwa <charlesmangwa@gmail.com> (https://github.com/CharlesMangwa)",
+  "author": "Charles Mangwa <charlesmangwa@gmail.com> (https://github.com/CharlesMangwa), Erik Waterloo <erik@colorfy.me> (https://github.com/3rikW)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/colorfy-software/react-native-gigya-sdk/issues"
