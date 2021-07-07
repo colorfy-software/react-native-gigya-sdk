@@ -1,9 +1,9 @@
 import type { GigyaSdkRegisteredAccountType } from '../types'
 
-import getAccountInfo from './getAccountInfo'
-import sendApiCall from './sendApiCall'
-import setSession from './setSession'
 import getState from './getState'
+import setSession from './setSession'
+import sendApiCall from './sendApiCall'
+import getAccountInfo from './getAccountInfo'
 
 export default function (options?: {
   noSetSession?: boolean

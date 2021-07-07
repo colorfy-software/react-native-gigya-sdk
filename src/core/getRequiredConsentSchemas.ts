@@ -1,4 +1,5 @@
 import type { GigyaConsentSchemaType } from '../types'
+
 import sendApiCall from './sendApiCall'
 
 type PartialGigyaSchema = {

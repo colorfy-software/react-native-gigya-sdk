@@ -9,6 +9,7 @@ import {
 } from '../types'
 
 import getState from './getState'
+import setSession from './setSession'
 import isGigyaError from './isGigyaError'
 import getAccountInfo from './getAccountInfo'
 import finalizeRegistration from './finalizeRegistration'
@@ -18,7 +19,6 @@ import getConflictingAccount from './getConflictingAccount'
 import resendVerificationEmail from './resendVerificationEmail'
 import getUnacceptedConsentSchemas from './getUnacceptedConsentSchemas'
 import saveAuthenticationAttempt from '../internals/saveAuthenticationAttempt'
-import setSession from './setSession'
 
 type ProviderType = Exclude<
   Exclude<GigyaSdkStateType['authenticationAttempt'], undefined>['type'],
@@ -40,7 +40,7 @@ type ActionRequiredType =
     }
   | {
       type: 'conflictingAccount'
-      loginId?: string
+      loginId?: GigyaSdkConflictingAccountType['loginID']
       loginProviders?: GigyaSdkConflictingAccountType['loginProviders']
     }
 
@@ -134,7 +134,6 @@ const onConsentSchemasAcceptance = (
 ): Promise<InternalOutputType> =>
   new Promise(async (resolve, reject) => {
     try {
-      const state = await getState()
       const unacceptedConsentSchemas = await getUnacceptedConsentSchemas<
         string[]
       >()
@@ -146,6 +145,7 @@ const onConsentSchemasAcceptance = (
       const account = await getAccountInfo({ noUID: true })
 
       if (!account.isVerified) {
+        const state = await getState()
         const output = await handlePendingVerification(state.error)
         return resolve(output)
       }

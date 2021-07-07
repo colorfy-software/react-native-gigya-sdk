@@ -1,11 +1,12 @@
 import type { GigyaSdkApiResponseType } from '../types'
+
 import getState from './getState'
 import sendApiCall from './sendApiCall'
 
 type OptionsType = {
   UID?: string
-  regToken?: string
   noUID?: boolean
+  regToken?: string
 }
 
 export default function (options?: OptionsType): Promise<boolean> {
