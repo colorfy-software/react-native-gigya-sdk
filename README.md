@@ -62,9 +62,9 @@ import Foundation
 
 ```
 
-- If you're planing on having Facebook login, [follow the documentation](https://developers.gigya.com/display/GD/Swift+SDK#SwiftSDK-Facebook) to install the Facebook SDK.
+- If you're planing on having Facebook login, [follow the documentation](https://help.sap.com/viewer/8b8d6fffe113457094a17701f63e3d6a/LATEST/en-US/417aa03e70b21014bbc5a10ce4041860.html) to install the Facebook SDK.
   
-- Same if you want Apple Sign In, [the documentation is here](https://developers.gigya.com/display/GD/Swift+SDK#SwiftSDK-Apple). 
+- Same if you want Apple Sign In, [the documentation is here](https://help.sap.com/viewer/8b8d6fffe113457094a17701f63e3d6a/LATEST/en-US/417aa03e70b21014bbc5a10ce4041860.html). 
 </details>
 
 ### Android
@@ -83,14 +83,14 @@ buildscript {
 }
 ```
 
-- If you're planing on having Facebook login, [follow the docs](https://developers.gigya.com/display/GD/Android+SDK+v4#AndroidSDKv4-Facebook) to install the Facebook SDK.
+- If you're planing on having Facebook login, [follow the docs](https://help.sap.com/viewer/8b8d6fffe113457094a17701f63e3d6a/LATEST/en-US/4142e7a870b21014bbc5a10ce4041860.html) to install the Facebook SDK.
 </details>
 
 ## 💻 Usage
 
-You can now initialize the SDK with your [**`apiKey`**](https://developers.gigya.com/display/GD/APIs+and+SDKs#APIsandSDKs-APIKeyandSiteSetup),
-[**`dataCenter`**](https://developers.gigya.com/display/GD/Finding+Your+Data+Center), application
-[**`lang`**](https://developers.gigya.com/display/GD/Advanced+Customizations+and+Localization),
+You can now initialize the SDK with your [**`apiKey`**](https://help.sap.com/viewer/8b8d6fffe113457094a17701f63e3d6a/GIGYA/en-US/4143211270b21014bbc5a10ce4041860.html),
+[**`dataCenter`**](https://help.sap.com/viewer/8b8d6fffe113457094a17701f63e3d6a/LATEST/en-US/41573b6370b21014bbc5a10ce4041860.html), application
+[**`lang`**](https://help.sap.com/viewer/8b8d6fffe113457094a17701f63e3d6a/LATEST/en-US/4141d83470b21014bbc5a10ce4041860.html),
 **`storage`** solution & desired **storageKey**.
 
 ❗ **Please make sure your storage library exposes `getItem()` and `setItem()` functions.**
