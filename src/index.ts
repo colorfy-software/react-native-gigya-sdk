@@ -17,6 +17,7 @@ const GigyaSdk = {
   getRequiredConsentSchemas: core.getRequiredConsentSchemas,
   getState: core.getState,
   getUnacceptedConsentSchemas: core.getUnacceptedConsentSchemas,
+  grantRequiredConsents: core.grantRequiredConsents,
   handleAuthenticationError: core.handleAuthenticationError,
   init: core.init,
   isAvailableLoginId: core.isAvailableLoginId,

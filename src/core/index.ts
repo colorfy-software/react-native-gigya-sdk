@@ -3,6 +3,7 @@ export { default as getRequiredConsentSchemas } from './getRequiredConsentSchema
 export { default as handleAuthenticationError } from './handleAuthenticationError'
 export { default as resendVerificationEmail } from './resendVerificationEmail'
 export { default as getConflictingAccount } from './getConflictingAccount'
+export { default as grantRequiredConsents } from './grantRequiredConsents'
 export { default as finalizeRegistration } from './finalizeRegistration'
 export { default as acceptConsentSchemas } from './acceptConsentSchemas'
 export { default as isAvailableLoginId } from './isAvailableLoginId'
