@@ -8,8 +8,8 @@ target 'GigyaSdkExample' do
 
   use_react_native!(:path => config["reactNativePath"])
 
-      pod 'Gigya'
-      pod 'react-native-gigya-sdk', :path => '../..'
+  pod 'Gigya'
+  pod 'react-native-gigya-sdk', :path => '../..'
   
   # Enables Flipper.
   #

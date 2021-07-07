@@ -30,7 +30,6 @@ import com.gigya.android.sdk.interruption.IPendingRegistrationResolver;
 
 
 public class GigyaSdkModule extends ReactContextBaseJavaModule {
-
     private ReactApplicationContext mContext;
     private Gigya mGigya;
 
@@ -45,6 +44,15 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return "GigyaSdk";
+    }
+
+    public static String accountToJSONString(final Object object) {
+        Gson gson = new Gson();
+        return gson.toJson(object);
+    }
+
+    public static HashMap<String, Object> parseParamsString(final String params) throws Exception{
+        return new Gson().fromJson(params, new TypeToken<HashMap<String, Object>>() {}.getType());
     }
 
     @ReactMethod
@@ -69,16 +77,19 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
                 }
             });
         } catch(Exception e) {
-            promise.reject("apiErrorParamsInvalid", "");
+            promise.reject("sendApiCall", String.valueOf(e));
             return;
         }
     }
 
     @ReactMethod
-    public void setSession(final String sessionToken, final String sessionSecret, final Promise promise) {
-        SessionInfo sessionInfo = new SessionInfo(sessionSecret, sessionToken);
-        mGigya.setSession(sessionInfo);
-        promise.resolve(true);
+    public void registerAccount(final String email, final String password, final String params, final Promise promise) {
+        try {
+            mGigya.register(email, password, parseParamsString(params), new GigyaLoginHandler(promise));
+        } catch(Exception e) {
+            promise.reject("registerAccount", String.valueOf(e));
+        }
+
     }
 
     @ReactMethod
@@ -89,17 +100,7 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
             paramsMap.put("password", password);
             mGigya.login(paramsMap, new GigyaLoginHandler(promise));
         } catch(Exception e) {
-            promise.reject("apiErrorParamsInvalid", "");
-        }
-
-    }
-
-    @ReactMethod
-    public void registerAccount(final String email, final String password, final String params, final Promise promise) {
-        try {
-            mGigya.register(email, password, parseParamsString(params), new GigyaLoginHandler(promise));
-        } catch(Exception e) {
-            promise.reject("apiErrorParamsInvalid", "");
+            promise.reject("login", String.valueOf(e));
         }
 
     }
@@ -109,24 +110,16 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
         try {
             mGigya.login(provider, parseParamsString(params), new GigyaLoginHandler(promise));
         } catch(Exception e) {
-            promise.reject("apiErrorParamsInvalid", "");
+            promise.reject("socialLogin", String.valueOf(e));
         }
 
     }
-
+    
     @ReactMethod
-    public void logout(final Promise promise) {
-        mGigya.logout(new GigyaCallback<GigyaApiResponse>() {
-            @Override
-            public void onSuccess(GigyaApiResponse gigyaApiResponse) {
-                promise.resolve(true);
-            }
-
-            @Override
-            public void onError(GigyaError gigyaError) {
-                promise.reject("logoutError", "{}", new Exception(gigyaError.toString()));
-            }
-        });
+    public void setSession(final String sessionToken, final String sessionSecret, final Promise promise) {
+        SessionInfo sessionInfo = new SessionInfo(sessionSecret, sessionToken);
+        mGigya.setSession(sessionInfo);
+        promise.resolve(true);
     }
 
     @ReactMethod
@@ -163,23 +156,30 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
                 }
             });
         } catch(Exception e) {
-            promise.reject("apiErrorParamsInvalid", "");
+            promise.reject("setAccount", String.valueOf(e));
         }
-    }
-
-    public static String accountToJSONString(final Object object) {
-        Gson gson = new Gson();
-        return gson.toJson(object);
-    }
-
-    public static HashMap<String, Object> parseParamsString(final String params) throws Exception{
-        return new Gson().fromJson(params, new TypeToken<HashMap<String, Object>>() {}.getType());
     }
 
     @ReactMethod
     public void isLoggedIn(final Promise promise) {
         promise.resolve(mGigya.isLoggedIn());
     }
+
+    @ReactMethod
+    public void logout(final Promise promise) {
+        mGigya.logout(new GigyaCallback<GigyaApiResponse>() {
+            @Override
+            public void onSuccess(GigyaApiResponse gigyaApiResponse) {
+                promise.resolve(true);
+            }
+
+            @Override
+            public void onError(GigyaError gigyaError) {
+                promise.reject("logoutError", "{}", new Exception(gigyaError.toString()));
+            }
+        });
+    }
+
 }
 
 class GigyaLoginHandler extends GigyaLoginCallback<GigyaAccount> {
