@@ -24,7 +24,7 @@ const GigyaSdk = {
   isGigyaError: core.isGigyaError,
   isLoggedIn: core.isLoggedIn,
   linkToSite: core.linkToSite,
-  // linkToConflictingSocialProvider:
+  linkToSocialProvider: core.linkToSocialProvider,
   login: core.login,
   logout: core.logout,
   registerAccount: core.registerAccount,
