@@ -8,7 +8,7 @@ type ProviderType = Exclude<
   undefined
 >
 
-// TODO: Use on socialLogin/smsLogin error.
+// TODO: Use on smsLogin error.
 
 export default function (
   type: ProviderType,

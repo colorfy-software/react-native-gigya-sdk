@@ -2,7 +2,7 @@ import type { GigyaSdkStateType } from '../types'
 
 import { setState } from './state'
 
-// TODO: Use on socialLogin/smsLogin success.
+// TODO: Use on smsLogin success.
 
 export default function (): Promise<GigyaSdkStateType> {
   return new Promise(async (resolve, reject) => {

@@ -36,7 +36,7 @@ const GigyaSdk = {
   // setProfilePhoto:
   setSession: core.setSession,
   // smsLogin:
-  // socialLogin:
+  socialLogin: core.socialLogin,
   verifyLogin: core.verifyLogin,
 }
 
