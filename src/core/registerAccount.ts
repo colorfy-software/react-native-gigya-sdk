@@ -14,7 +14,7 @@ interface DefaultParamsType {
   lang?: string
 }
 
-export default function <ParamsType extends DefaultParamsType>(
+export default function <ParamsType extends Record<string, unknown>>(
   email: string,
   password: string,
   params?: ParamsType
@@ -24,7 +24,7 @@ export default function <ParamsType extends DefaultParamsType>(
       await logout()
       const state = await getState()
 
-      let values = params || ({} as ParamsType)
+      let values: DefaultParamsType = params || {}
       values.lang = values?.lang || state.lang
 
       const response = await handleSdkCall<GigyaSdkRegisteredAccountType>(
