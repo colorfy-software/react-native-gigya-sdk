@@ -3,6 +3,7 @@ package me.colorfy.rngsdk;
 import java.util.Map;
 import java.util.List;
 import java.util.HashMap;
+import java.lang.reflect.Type;
 
 import android.app.Application;
 
@@ -27,39 +28,37 @@ import com.gigya.android.sdk.interruption.link.ILinkAccountsResolver;
 import com.gigya.android.sdk.interruption.tfa.models.TFAProviderModel;
 import com.gigya.android.sdk.interruption.IPendingRegistrationResolver;
 
-
-
 public class GigyaSdkModule extends ReactContextBaseJavaModule {
     private ReactApplicationContext mContext;
     private Gigya mGigya;
 
-    //Constructor
+    // Constructor
     public GigyaSdkModule(ReactApplicationContext reactContext) {
         super(reactContext);
         mContext = reactContext;
         Gigya.setApplication((Application) mContext.getApplicationContext());
     }
 
-    //Name for module register to use:
+    // Name for module register to use:
     @Override
     public String getName() {
         return "GigyaSdk";
     }
 
     public static String accountToJSONString(final Object object) {
-        Gson gson = new Gson();
-        return gson.toJson(object);
+        return new Gson().toJson(object);
     }
 
-    public static HashMap<String, Object> parseParamsString(final String params) throws Exception{
-        return new Gson().fromJson(params, new TypeToken<HashMap<String, Object>>() {}.getType());
+    public static Map<String, Object> parseParamsString(final String params) throws Exception {
+        return new Gson().fromJson(params, new TypeToken<HashMap<String, Object>>() {
+        }.getType());
     }
 
     @ReactMethod
     public void initialize(ReadableMap config, final Promise promise) {
-      Gigya.getInstance(GigyaAccount.class).init(config.getString("apiKey"), config.getString("dataCenter"));
-      mGigya = Gigya.getInstance(GigyaAccount.class);
-      promise.resolve(true);
+        Gigya.getInstance(GigyaAccount.class).init(config.getString("apiKey"), config.getString("dataCenter"));
+        mGigya = Gigya.getInstance(GigyaAccount.class);
+        promise.resolve(true);
     }
 
     @ReactMethod
@@ -76,7 +75,7 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
                     promise.resolve(gigyaApiResponse.asJson());
                 }
             });
-        } catch(Exception e) {
+        } catch (Exception e) {
             promise.reject("sendApiCall", String.valueOf(e));
             return;
         }
@@ -86,7 +85,7 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
     public void registerAccount(final String email, final String password, final String params, final Promise promise) {
         try {
             mGigya.register(email, password, parseParamsString(params), new GigyaLoginHandler(promise));
-        } catch(Exception e) {
+        } catch (Exception e) {
             promise.reject("registerAccount", String.valueOf(e));
         }
 
@@ -99,7 +98,7 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
             paramsMap.put("loginID", email);
             paramsMap.put("password", password);
             mGigya.login(paramsMap, new GigyaLoginHandler(promise));
-        } catch(Exception e) {
+        } catch (Exception e) {
             promise.reject("login", String.valueOf(e));
         }
 
@@ -109,12 +108,12 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
     public void socialLogin(final String provider, final String params, final Promise promise) {
         try {
             mGigya.login(provider, parseParamsString(params), new GigyaLoginHandler(promise));
-        } catch(Exception e) {
+        } catch (Exception e) {
             promise.reject("socialLogin", String.valueOf(e));
         }
 
     }
-    
+
     @ReactMethod
     public void setSession(final String sessionToken, final String sessionSecret, final Promise promise) {
         SessionInfo sessionInfo = new SessionInfo(sessionSecret, sessionToken);
@@ -129,7 +128,7 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
             public void onSuccess(GigyaAccount gigyaAccount) {
                 try {
                     promise.resolve(accountToJSONString(gigyaAccount));
-                } catch(Exception e) {
+                } catch (Exception e) {
                     promise.reject("getAccountErrorJSON", "{}", e);
                 }
             }
@@ -155,7 +154,7 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
                     promise.resolve(accountToJSONString(gigyaAccount));
                 }
             });
-        } catch(Exception e) {
+        } catch (Exception e) {
             promise.reject("setAccount", String.valueOf(e));
         }
     }
@@ -210,26 +209,34 @@ class GigyaLoginHandler extends GigyaLoginCallback<GigyaAccount> {
     }
 
     public void onPendingVerification(GigyaApiResponse response, String regToken) {
-        mPromise.reject("pendingVerification", GigyaError.fromResponse(response).getData(), new Exception(GigyaError.fromResponse(response).getData()));
+        mPromise.reject("pendingVerification", GigyaError.fromResponse(response).getData(),
+                new Exception(GigyaError.fromResponse(response).getData()));
     }
 
     public void onPendingRegistration(GigyaApiResponse response, IPendingRegistrationResolver resolver) {
-        mPromise.reject("pendingRegistration", GigyaError.fromResponse(response).getData(), new Exception(GigyaError.fromResponse(response).getData()));
+        mPromise.reject("pendingRegistration", GigyaError.fromResponse(response).getData(),
+                new Exception(GigyaError.fromResponse(response).getData()));
     }
 
     public void onConflictingAccounts(GigyaApiResponse response, ILinkAccountsResolver resolver) {
-        mPromise.reject("conflictingAccount", GigyaError.fromResponse(response).getData(), new Exception(response.asJson()));
+        mPromise.reject("conflictingAccount", GigyaError.fromResponse(response).getData(),
+                new Exception(response.asJson()));
     }
 
     public void onPendingPasswordChange(GigyaApiResponse response) {
-        mPromise.reject("pendingPasswordChange", GigyaError.fromResponse(response).getData(), new Exception(GigyaError.fromResponse(response).getData()));
+        mPromise.reject("pendingPasswordChange", GigyaError.fromResponse(response).getData(),
+                new Exception(GigyaError.fromResponse(response).getData()));
     }
 
-    public void onPendingTwoFactorRegistration(GigyaApiResponse response, List<TFAProviderModel> inactiveProviders, TFAResolverFactory resolverFactory) {
-        mPromise.reject("pendingTwoFactorRegistration", GigyaError.fromResponse(response).getData(), new Exception(GigyaError.fromResponse(response).getData()));
+    public void onPendingTwoFactorRegistration(GigyaApiResponse response, List<TFAProviderModel> inactiveProviders,
+            TFAResolverFactory resolverFactory) {
+        mPromise.reject("pendingTwoFactorRegistration", GigyaError.fromResponse(response).getData(),
+                new Exception(GigyaError.fromResponse(response).getData()));
     }
 
-    public void onPendingTwoFactorVerification(GigyaApiResponse response, List<TFAProviderModel> activeProviders, TFAResolverFactory resolverFactory) {
-        mPromise.reject("pendingTwoFactorVerification", GigyaError.fromResponse(response).getData(), new Exception(GigyaError.fromResponse(response).getData()));
+    public void onPendingTwoFactorVerification(GigyaApiResponse response, List<TFAProviderModel> activeProviders,
+            TFAResolverFactory resolverFactory) {
+        mPromise.reject("pendingTwoFactorVerification", GigyaError.fromResponse(response).getData(),
+                new Exception(GigyaError.fromResponse(response).getData()));
     }
 }

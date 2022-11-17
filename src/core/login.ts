@@ -6,6 +6,7 @@ import type { GigyaSdkAccountInfoType } from '../types'
 import logout from './logout'
 import isGigyaError from './isGigyaError'
 import { setState } from '../internals/state'
+import formatParams from '../internals/formatParams'
 import handleSdkCall from '../internals/handleSdkCall'
 import clearErrorState from '../internals/clearErrorState'
 import saveAuthenticationAttempt from '../internals/saveAuthenticationAttempt'
@@ -20,7 +21,7 @@ export default function <ParamsType extends Record<string, unknown>>(
       await logout()
 
       const response = await handleSdkCall<GigyaSdkAccountInfoType>(
-        GigyaSdk.login(email, password, JSON.stringify(params || {}))
+        GigyaSdk.login(email, password, formatParams(params || {}))
       )
 
       await setState({ UID: response.UID })

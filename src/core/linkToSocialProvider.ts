@@ -6,6 +6,7 @@ import type { GigyaSdkAccountInfoType, GigyaSdkLoginType } from '../types'
 import getState from './getState'
 import isGigyaError from './isGigyaError'
 import { setState } from '../internals/state'
+import formatParams from '../internals/formatParams'
 import handleSdkCall from '../internals/handleSdkCall'
 import clearErrorState from '../internals/clearErrorState'
 import saveAuthenticationAttempt from '../internals/saveAuthenticationAttempt'
@@ -24,7 +25,7 @@ export default function <ParamsType extends Record<string, unknown>>(
       const response = await handleSdkCall<GigyaSdkAccountInfoType>(
         GigyaSdk.socialLogin(
           provider,
-          JSON.stringify({ regToken, loginMode: 'link', ...(rest && rest) })
+          formatParams({ regToken, loginMode: 'link', ...(rest && rest) })
         )
       )
 

@@ -129,5 +129,5 @@ dependencies {
   api 'com.facebook.react:react-native:+'
   implementation "org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"
   implementation "com.github.SAP.gigya-android-sdk:gigya-android-sdk-core:${gigya_core_sdk_version}"
-  implementation 'com.google.code.gson:gson:2.8.6'
+  implementation 'com.google.code.gson:gson:2.9.0'
 }

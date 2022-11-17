@@ -9,6 +9,7 @@ const CONFIG = {
   DATA_CENTER: '__GIGYA_DATA_CENTER', // eg: 'eu1.gigya.com'
   STORAGE_KEY: 'GigyaSdkEncryptedStorageKey',
 
+  // Just here to speed up your testing, not needed by the library config.
   EMAIL: '',
   PASSWORD: '',
 }
@@ -44,7 +45,9 @@ export default function App() {
         title="1. Register account"
         onPress={async () => {
           try {
-            await GigyaSdk.registerAccount(CONFIG.EMAIL, CONFIG.PASSWORD)
+            await GigyaSdk.registerAccount(CONFIG.EMAIL, CONFIG.PASSWORD, {
+              profile: { firstName: 'Test', lastName: 'User' },
+            })
           } catch (e) {
             try {
               const output = await GigyaSdk.handleAuthenticationError('email', {

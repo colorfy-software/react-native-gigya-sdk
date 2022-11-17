@@ -6,6 +6,7 @@ import type { GigyaSdkRegisteredAccountType } from '../types'
 import logout from './logout'
 import getState from './getState'
 import isGigyaError from './isGigyaError'
+import formatParams from '../internals/formatParams'
 import handleSdkCall from '../internals/handleSdkCall'
 import clearErrorState from '../internals/clearErrorState'
 import saveAuthenticationAttempt from '../internals/saveAuthenticationAttempt'
@@ -28,7 +29,7 @@ export default function <ParamsType extends Record<string, unknown>>(
       values.lang = values?.lang || state.lang
 
       const response = await handleSdkCall<GigyaSdkRegisteredAccountType>(
-        GigyaSdk.registerAccount(email, password, JSON.stringify(values))
+        GigyaSdk.registerAccount(email, password, formatParams(values))
       )
 
       try {
