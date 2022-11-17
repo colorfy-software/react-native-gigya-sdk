@@ -9,7 +9,7 @@ export interface GigyaSdkStateType {
     setItem: (key: string, value: string) => any
   }
   authenticationAttempt?: {
-    type?: 'apple' | 'email' | 'facebook'
+    type?: Exclude<GigyaSdkLoginProvidersType, 'site'> | 'email'
   }
   regToken?: {
     value?: GigyaSdkLoginErrorPayloadType['regToken']
@@ -17,6 +17,14 @@ export interface GigyaSdkStateType {
     isStillValid?: boolean
   }
 }
+
+export type GigyaSdkLoginProvidersType =
+  | 'site'
+  | 'apple'
+  | 'facebook'
+  | 'google'
+  | 'line'
+  | 'wechat'
 
 export enum GigyaSdkErrorCodes {
   ConsecutiveRequestLimitReached = 400125,
@@ -118,7 +126,7 @@ export interface GigyaSdkLoginErrorPayloadType extends GigyaSdkApiResponseType {
   id_token: string
   regToken: string
   loginID?: string
-  loginProviders?: ('apple' | 'facebook' | 'site')[]
+  loginProviders?: GigyaSdkLoginProvidersType[]
   validationErrors?: GigyaSdkValidationErrorType[]
 }
 
@@ -202,7 +210,7 @@ export interface GigyaSdkProfileType {
 }
 
 export interface GigyaSdkLoginType {
-  loginProvider: 'apple' | 'facebook' | 'site'
+  loginProvider: GigyaSdkLoginProvidersType
   lastLogin: Date
   profile: GigyaSdkProfileType
   lastUpdatedTimestamp: number
@@ -250,5 +258,5 @@ export interface GigyaSdkRegisteredAccountType extends GigyaSdkAccountInfoType {
 
 export interface GigyaSdkConflictingAccountType {
   loginID: string
-  loginProviders: ('apple' | 'facebook' | 'site')[]
+  loginProviders: GigyaSdkLoginProvidersType[]
 }
