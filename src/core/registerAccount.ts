@@ -7,8 +7,8 @@ import logout from './logout'
 import getState from './getState'
 import isGigyaError from './isGigyaError'
 import handleSdkCall from '../internals/handleSdkCall'
-import saveAuthenticationAttempt from '../internals/saveAuthenticationAttempt'
 import clearErrorState from '../internals/clearErrorState'
+import saveAuthenticationAttempt from '../internals/saveAuthenticationAttempt'
 
 interface DefaultParamsType {
   lang?: string

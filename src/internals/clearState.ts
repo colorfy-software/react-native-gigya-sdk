@@ -10,10 +10,10 @@ export default function (): Promise<GigyaSdkStateType> {
 
       const output = await setState({
         UID: undefined,
-        lang: state.lang || 'en',
         error: undefined,
-        authenticationAttempt: undefined,
         regToken: undefined,
+        lang: state.lang || 'en',
+        authenticationAttempt: undefined,
       })
 
       resolve(output)

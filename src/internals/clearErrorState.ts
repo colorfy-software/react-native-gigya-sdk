@@ -9,8 +9,8 @@ export default function (): Promise<GigyaSdkStateType> {
     try {
       const output = await setState({
         error: undefined,
-        authenticationAttempt: undefined,
         regToken: undefined,
+        authenticationAttempt: undefined,
       })
 
       resolve(output)

@@ -37,6 +37,7 @@
     "test": "jest",
     "typescript": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\" --fix",
+    "pre-commit": "yarn lint && yarn typescript",
     "prepare": "npx -p react-native-builder-bob bob build",
     "release": "release-it",
     "example": "yarn --cwd example",
