@@ -1,7 +1,7 @@
 import type { GigyaSdkConflictingAccountType } from '../types'
 
-import sendApiCall from './sendApiCall'
 import getState from './getState'
+import sendApiCall from './sendApiCall'
 
 export default function (): Promise<GigyaSdkConflictingAccountType | null> {
   return new Promise(async (resolve, reject) => {

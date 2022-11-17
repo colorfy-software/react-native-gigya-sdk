@@ -4,8 +4,8 @@ import {
   GigyaSdkErrorType,
   GigyaSdkErrorCodes,
   GigyaSdkAccountInfoType,
-  GigyaSdkConflictingAccountType,
   GigyaSdkRegisteredAccountType,
+  GigyaSdkConflictingAccountType,
 } from '../types'
 
 import getState from './getState'

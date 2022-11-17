@@ -1,8 +1,8 @@
 import type { GigyaSdkRegisteredAccountType } from '../types'
 
-import sendApiCall from './sendApiCall'
-import isLoggedIn from './isLoggedIn'
 import getState from './getState'
+import isLoggedIn from './isLoggedIn'
+import sendApiCall from './sendApiCall'
 
 type ParamsType = {
   include?: string

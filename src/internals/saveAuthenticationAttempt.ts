@@ -1,7 +1,7 @@
 import type { GigyaSdkErrorType, GigyaSdkStateType } from '../types'
 
-import getState from '../core/getState'
 import { setState } from './state'
+import getState from '../core/getState'
 
 type ProviderType = Exclude<
   Exclude<GigyaSdkStateType['authenticationAttempt'], undefined>['type'],
