@@ -50,7 +50,7 @@ export default function App() {
             })
           } catch (e) {
             try {
-              const output = await GigyaSdk.handleAuthenticationError('email', {
+              const output = await GigyaSdk.handleAuthenticationError('site', {
                 isRegistration: true,
               })
 
@@ -72,7 +72,7 @@ export default function App() {
             console.log('🥳', { account })
           } catch (e) {
             try {
-              const output = await GigyaSdk.handleAuthenticationError('email', {
+              const output = await GigyaSdk.handleAuthenticationError('site', {
                 isRegistration: true,
               })
 

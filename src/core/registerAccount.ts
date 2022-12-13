@@ -40,7 +40,7 @@ export default function <ParamsType extends Record<string, unknown>>(
     } catch (e) {
       if (await isGigyaError(e)) {
         try {
-          await saveAuthenticationAttempt('email', e)
+          await saveAuthenticationAttempt('site', e)
         } catch (err) {
           return reject(err)
         }

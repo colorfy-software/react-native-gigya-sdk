@@ -9,7 +9,7 @@ export interface GigyaSdkStateType {
     setItem: (key: string, value: string) => any
   }
   authenticationAttempt?: {
-    type?: Exclude<GigyaSdkLoginProvidersType, 'site'> | 'email'
+    type?: GigyaSdkLoginProvidersType
   }
   regToken?: {
     value?: GigyaSdkLoginErrorPayloadType['regToken']
