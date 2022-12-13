@@ -22,7 +22,7 @@ export type GigyaSdkLoginProvidersType =
   | 'site'
   | 'apple'
   | 'facebook'
-  | 'google'
+  | 'googleplus'
   | 'line'
   | 'wechat'
 
