@@ -1,7 +1,10 @@
 import { NativeModules } from 'react-native'
 const { GigyaSdk } = NativeModules
 
-import type { GigyaSdkAccountInfoType, GigyaSdkLoginType } from '../types'
+import type {
+  GigyaSdkAccountInfoType,
+  GigyaSdkSocialProvidersType,
+} from '../types'
 
 import getState from './getState'
 import isGigyaError from './isGigyaError'
@@ -12,7 +15,7 @@ import clearErrorState from '../internals/clearErrorState'
 import saveAuthenticationAttempt from '../internals/saveAuthenticationAttempt'
 
 export default function <ParamsType extends Record<string, unknown>>(
-  provider: Exclude<GigyaSdkLoginType['loginProvider'], 'site'>,
+  provider: GigyaSdkSocialProvidersType,
   params?: ParamsType
 ): Promise<GigyaSdkAccountInfoType> {
   return new Promise(async (resolve, reject) => {

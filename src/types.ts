@@ -9,7 +9,7 @@ export interface GigyaSdkStateType {
     setItem: (key: string, value: string) => any
   }
   authenticationAttempt?: {
-    type?: GigyaSdkLoginProvidersType
+    type?: GigyaSdkLoginProvidersType | GigyaSdkSocialProvidersType
   }
   regToken?: {
     value?: GigyaSdkLoginErrorPayloadType['regToken']
@@ -25,6 +25,10 @@ export type GigyaSdkLoginProvidersType =
   | 'googleplus'
   | 'line'
   | 'wechat'
+
+export type GigyaSdkSocialProvidersType =
+  | Exclude<GigyaSdkLoginProvidersType, 'googleplus' | 'site'>
+  | 'google'
 
 export enum GigyaSdkErrorCodes {
   ConsecutiveRequestLimitReached = 400125,
