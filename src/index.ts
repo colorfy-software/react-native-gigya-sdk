@@ -8,7 +8,6 @@ const GigyaSdk = {
 
   acceptConsentSchemas: core.acceptConsentSchemas,
   deleteAccount: core.deleteAccount,
-  // forgotPassword:
   finalizeRegistration: core.finalizeRegistration,
   getAccount: core.getAccount,
   getAccountInfo: core.getAccountInfo,
@@ -29,6 +28,7 @@ const GigyaSdk = {
   logout: core.logout,
   registerAccount: core.registerAccount,
   resendVerificationEmail: core.resendVerificationEmail,
+  resetPassword: core.resetPassword,
   sendApiCall: core.sendApiCall,
   // sendSmsCode:
   setAccount: core.setAccount,
