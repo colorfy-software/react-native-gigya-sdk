@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
-import GigyaSdk from 'react-native-gigya-sdk'
+import React, { useEffect, useState } from 'react'
 import EncryptedStorage from 'react-native-encrypted-storage'
 import { Button, StyleSheet, Text, View } from 'react-native'
+import GigyaSdk, { GigyaSdkAccountInfoType } from 'react-native-gigya-sdk'
 
 const CONFIG = {
   LANG: 'en',
+  API_SECRET: '',
   API_KEY: '__GIGYA_API_KEY__',
   DATA_CENTER: '__GIGYA_DATA_CENTER', // eg: 'eu1.gigya.com'
   STORAGE_KEY: 'GigyaSdkEncryptedStorageKey',
@@ -15,6 +16,8 @@ const CONFIG = {
 }
 
 export default function App() {
+  const [account, setAccount] = useState<GigyaSdkAccountInfoType>()
+
   useEffect(() => {
     const asyncGigyaPlayground = async () => {
       try {
@@ -68,8 +71,9 @@ export default function App() {
         title="2. I've validated my account, login now"
         onPress={async () => {
           try {
-            const account = await GigyaSdk.login(CONFIG.EMAIL, CONFIG.PASSWORD)
-            console.log('🥳', { account })
+            const output = await GigyaSdk.login(CONFIG.EMAIL, CONFIG.PASSWORD)
+            console.log('🥳', { account: output })
+            setAccount(output)
           } catch (e) {
             try {
               const output = await GigyaSdk.handleAuthenticationError('site', {
@@ -110,8 +114,27 @@ export default function App() {
               extraProfileFields: 'phones',
             })
             console.log('🗃', { accountInfo })
+            setAccount(accountInfo)
           } catch (e) {
             console.log('❌ GET ACCOUNT INFO REJECTED', e)
+          }
+        }}
+      />
+
+      <View style={styles.spacer} />
+
+      <Button
+        title="5. Delete account"
+        onPress={async () => {
+          try {
+            const deleteAccount = await GigyaSdk.deleteAccount({
+              UID: account?.UID,
+              secret: CONFIG.API_SECRET,
+            })
+            console.log('👋', { deleteAccount })
+            setAccount(undefined)
+          } catch (e) {
+            console.log('❌ DELETE ACCOUNT FAILED', e)
           }
         }}
       />
