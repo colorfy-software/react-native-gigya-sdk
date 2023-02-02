@@ -3,10 +3,7 @@ const { GigyaSdk } = NativeModules
 
 import handleSdkCall from '../internals/handleSdkCall'
 
-export default function <
-  OutputType,
-  DataType = Record<string | number, unknown>
->(data: DataType): Promise<OutputType> {
+export default function <OutputType, DataType = Record<string | number, unknown>>(data: DataType): Promise<OutputType> {
   return new Promise(async (resolve, reject) => {
     let values = data
 
@@ -17,9 +14,7 @@ export default function <
         }
       }
 
-      const response = await handleSdkCall<OutputType>(
-        GigyaSdk.setAccount(JSON.stringify(values))
-      )
+      const response = await handleSdkCall<OutputType>(GigyaSdk.setAccount(JSON.stringify(values)))
 
       resolve(response)
     } catch (e) {

@@ -5,9 +5,7 @@ import setSession from './setSession'
 import sendApiCall from './sendApiCall'
 import getAccountInfo from './getAccountInfo'
 
-export default function (options?: {
-  noSetSession?: boolean
-}): Promise<GigyaSdkRegisteredAccountType> {
+export default function (options?: { noSetSession?: boolean }): Promise<GigyaSdkRegisteredAccountType> {
   return new Promise(async (resolve, reject) => {
     try {
       const state = await getState()

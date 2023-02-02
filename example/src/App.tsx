@@ -109,8 +109,7 @@ export default function App() {
         onPress={async () => {
           try {
             const accountInfo = await GigyaSdk.getAccountInfo({
-              include:
-                'id_token,profile,data,subscriptions,isLockedOut,lastLoginLocation,preferences',
+              include: 'id_token,profile,data,subscriptions,isLockedOut,lastLoginLocation,preferences',
               extraProfileFields: 'phones',
             })
             console.log('🗃', { accountInfo })

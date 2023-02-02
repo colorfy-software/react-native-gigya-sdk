@@ -20,10 +20,7 @@ import resendVerificationEmail from './resendVerificationEmail'
 import getUnacceptedConsentSchemas from './getUnacceptedConsentSchemas'
 import saveAuthenticationAttempt from '../internals/saveAuthenticationAttempt'
 
-type ProviderType = Exclude<
-  Exclude<GigyaSdkStateType['authenticationAttempt'], undefined>['type'],
-  undefined
->
+type ProviderType = Exclude<Exclude<GigyaSdkStateType['authenticationAttempt'], undefined>['type'], undefined>
 
 type OptionsType = {
   error?: GigyaSdkErrorType
@@ -77,9 +74,7 @@ type OutputType = {
   account?: GigyaSdkAccountInfoType | GigyaSdkRegisteredAccountType
 }
 
-const handleExpiredRegToken = (
-  error?: GigyaSdkErrorType
-): Promise<InternalOutputType> =>
+const handleExpiredRegToken = (error?: GigyaSdkErrorType): Promise<InternalOutputType> =>
   new Promise(async (resolve) => {
     resolve({
       handled: true,
@@ -88,9 +83,7 @@ const handleExpiredRegToken = (
     })
   })
 
-const handlePendingVerification = (
-  error?: GigyaSdkErrorType
-): Promise<InternalOutputType> =>
+const handlePendingVerification = (error?: GigyaSdkErrorType): Promise<InternalOutputType> =>
   new Promise(async (resolve) => {
     await resendVerificationEmail({ noUID: true })
     resolve({
@@ -100,14 +93,10 @@ const handlePendingVerification = (
     })
   })
 
-const handleConflictingAccount = (
-  error?: GigyaSdkErrorType
-): Promise<InternalOutputType> =>
+const handleConflictingAccount = (error?: GigyaSdkErrorType): Promise<InternalOutputType> =>
   new Promise(async (resolve) => {
     try {
-      const conflictingAccount = error?.payload?.loginProviders
-        ? error.payload
-        : await getConflictingAccount()
+      const conflictingAccount = error?.payload?.loginProviders ? error.payload : await getConflictingAccount()
 
       resolve({
         error,
@@ -129,14 +118,10 @@ const handleConflictingAccount = (
     }
   })
 
-const onConsentSchemasAcceptance = (
-  options?: OptionsType
-): Promise<InternalOutputType> =>
+const onConsentSchemasAcceptance = (options?: OptionsType): Promise<InternalOutputType> =>
   new Promise(async (resolve, reject) => {
     try {
-      const unacceptedConsentSchemas = await getUnacceptedConsentSchemas<
-        string[]
-      >()
+      const unacceptedConsentSchemas = await getUnacceptedConsentSchemas<string[]>()
 
       if (unacceptedConsentSchemas) {
         await acceptConsentSchemas(unacceptedConsentSchemas, { noUID: true })
@@ -155,10 +140,7 @@ const onConsentSchemasAcceptance = (
 
         if (!options?.noSetSession) {
           try {
-            await setSession(
-              response.sessionInfo.sessionToken,
-              response.sessionInfo.sessionSecret
-            )
+            await setSession(response.sessionInfo.sessionToken, response.sessionInfo.sessionSecret)
           } catch (e) {}
         }
 
@@ -178,15 +160,10 @@ const onConsentSchemasAcceptance = (
     }
   })
 
-const handlePendingRegistration = (
-  error?: GigyaSdkErrorType,
-  options?: OptionsType
-): Promise<InternalOutputType> =>
+const handlePendingRegistration = (error?: GigyaSdkErrorType, options?: OptionsType): Promise<InternalOutputType> =>
   new Promise(async (resolve, reject) => {
     try {
-      const unacceptedConsentSchemas = await getUnacceptedConsentSchemas<
-        string[]
-      >()
+      const unacceptedConsentSchemas = await getUnacceptedConsentSchemas<string[]>()
 
       if (unacceptedConsentSchemas?.length) {
         if (options?.isRegistration) {
@@ -216,10 +193,7 @@ const handlePendingRegistration = (
 
         if (!options?.noSetSession) {
           try {
-            await setSession(
-              response.sessionInfo.sessionToken,
-              response.sessionInfo.sessionSecret
-            )
+            await setSession(response.sessionInfo.sessionToken, response.sessionInfo.sessionSecret)
           } catch (e) {}
         }
 
@@ -234,10 +208,7 @@ const handlePendingRegistration = (
     }
   })
 
-export default function (
-  type: ProviderType,
-  options?: OptionsType
-): Promise<OutputType> {
+export default function (type: ProviderType, options?: OptionsType): Promise<OutputType> {
   return new Promise(async (resolve, reject) => {
     try {
       const state = await getState()
@@ -264,11 +235,7 @@ export default function (
         return resolve(output as OutputType)
       }
 
-      if (
-        error?.payload?.validationErrors?.filter(
-          (validationError) => validationError.fieldName === 'email'
-        )
-      ) {
+      if (error?.payload?.validationErrors?.filter((validationError) => validationError.fieldName === 'email')) {
         output = await handleConflictingAccount(error)
         return resolve(output as OutputType)
       }

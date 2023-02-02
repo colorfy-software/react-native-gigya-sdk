@@ -30,14 +30,10 @@ export default function (gigyaSdkError: GigyaSdkErrorType): GigyaSdkErrorType {
     } catch (e) {}
 
     error.type = (<any>GigyaSdkErrors)[gigyaSdkError.code as string]
-    const errorTypeIndex = Object.values(GigyaSdkErrorCodes).indexOf(
-      error?.payload?.errorCode as number
-    )
+    const errorTypeIndex = Object.values(GigyaSdkErrorCodes).indexOf(error?.payload?.errorCode as number)
 
     if (errorTypeIndex !== -1) {
-      const type = (Object.keys(GigyaSdkErrorCodes)[
-        errorTypeIndex
-      ] as unknown) as keyof typeof GigyaSdkErrors
+      const type = (Object.keys(GigyaSdkErrorCodes)[errorTypeIndex] as unknown) as keyof typeof GigyaSdkErrors
       error.type = GigyaSdkErrors[type]
     }
   }

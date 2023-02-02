@@ -14,15 +14,12 @@ export default function (options?: OptionsType): Promise<boolean> {
     try {
       const state = await getState()
 
-      await sendApiCall<GigyaSdkApiResponseType>(
-        'accounts.resendVerificationCode',
-        {
-          ...(options?.noUID && {
-            regToken: options?.regToken || state.regToken?.value,
-          }),
-          ...(!options?.noUID && { UID: options?.UID || state.UID }),
-        }
-      )
+      await sendApiCall<GigyaSdkApiResponseType>('accounts.resendVerificationCode', {
+        ...(options?.noUID && {
+          regToken: options?.regToken || state.regToken?.value,
+        }),
+        ...(!options?.noUID && { UID: options?.UID || state.UID }),
+      })
 
       resolve(true)
     } catch (e) {

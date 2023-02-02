@@ -19,19 +19,12 @@ type OptionsType = {
   regToken?: string
 }
 
-export default function (
-  loginID: string,
-  password: string,
-  options?: OptionsType
-): Promise<GigyaSdkAccountInfoType> {
+export default function (loginID: string, password: string, options?: OptionsType): Promise<GigyaSdkAccountInfoType> {
   return new Promise(async (resolve, reject) => {
     try {
       const state = await getState()
 
-      const response = await sendApiCall<
-        GigyaSdkAccountInfoType,
-        ApiCallParamsType
-      >('accounts.linkAccounts', {
+      const response = await sendApiCall<GigyaSdkAccountInfoType, ApiCallParamsType>('accounts.linkAccounts', {
         loginID,
         password,
         targetEnv: 'mobile',

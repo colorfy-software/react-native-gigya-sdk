@@ -3,17 +3,11 @@ import type { GigyaSdkErrorType, GigyaSdkStateType } from '../types'
 import { setState } from './state'
 import getState from '../core/getState'
 
-type ProviderType = Exclude<
-  Exclude<GigyaSdkStateType['authenticationAttempt'], undefined>['type'],
-  undefined
->
+type ProviderType = Exclude<Exclude<GigyaSdkStateType['authenticationAttempt'], undefined>['type'], undefined>
 
 // TODO: Use on smsLogin error.
 
-export default function (
-  type: ProviderType,
-  error: GigyaSdkErrorType
-): Promise<void> {
+export default function (type: ProviderType, error: GigyaSdkErrorType): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
     try {
       const state = await getState()
@@ -25,9 +19,7 @@ export default function (
         incomingRegToken && incomingRegToken !== existingRegToken
           ? new Date(new Date().setHours(new Date().getHours() + 1))
           : state.regToken?.expirationDate
-      const isStillValid =
-        expirationDate &&
-        new Date(expirationDate).getTime() >= new Date().getTime()
+      const isStillValid = expirationDate && new Date(expirationDate).getTime() >= new Date().getTime()
 
       await setState({
         error: error ?? state.error,

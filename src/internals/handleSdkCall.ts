@@ -1,9 +1,6 @@
 import formatError from './formatError'
 
-export default function <T>(
-  sdkCall: Promise<any>,
-  options?: { noParsing: boolean }
-): Promise<T> {
+export default function <T>(sdkCall: Promise<any>, options?: { noParsing: boolean }): Promise<T> {
   return new Promise(async (resolve, reject) => {
     try {
       let response = null

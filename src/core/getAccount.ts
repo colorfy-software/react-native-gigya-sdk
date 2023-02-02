@@ -5,9 +5,7 @@ import type { GigyaSdkAccountInfoType } from '../types'
 
 import handleSdkCall from '../internals/handleSdkCall'
 
-export default function <
-  OutputType extends GigyaSdkAccountInfoType
->(): Promise<OutputType> {
+export default function <OutputType extends GigyaSdkAccountInfoType>(): Promise<OutputType> {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await handleSdkCall<OutputType>(GigyaSdk.getAccount())

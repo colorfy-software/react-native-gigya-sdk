@@ -18,17 +18,9 @@ export interface GigyaSdkStateType {
   }
 }
 
-export type GigyaSdkLoginProvidersType =
-  | 'site'
-  | 'apple'
-  | 'facebook'
-  | 'googleplus'
-  | 'line'
-  | 'wechat'
+export type GigyaSdkLoginProvidersType = 'site' | 'apple' | 'facebook' | 'googleplus' | 'line' | 'wechat'
 
-export type GigyaSdkSocialProvidersType =
-  | Exclude<GigyaSdkLoginProvidersType, 'googleplus' | 'site'>
-  | 'google'
+export type GigyaSdkSocialProvidersType = Exclude<GigyaSdkLoginProvidersType, 'googleplus' | 'site'> | 'google'
 
 export enum GigyaSdkErrorCodes {
   ConsecutiveRequestLimitReached = 400125,
@@ -83,17 +75,11 @@ export interface GigyaSdkApiResponseType {
 
 export interface GigyaSdkValidationErrorType {
   errorCode: number
-  fieldName:
-    | 'username'
-    | 'password'
-    | 'secretQuestion'
-    | 'secretAnswer'
-    | 'email'
+  fieldName: 'username' | 'password' | 'secretQuestion' | 'secretAnswer' | 'email'
   message: string
 }
 
-export interface GigyaSdkLoginErrorPayloadAccountInfoType
-  extends GigyaSdkApiResponseType {
+export interface GigyaSdkLoginErrorPayloadAccountInfoType extends GigyaSdkApiResponseType {
   UID: string
   UIDSig: string
   UIDSignature: string

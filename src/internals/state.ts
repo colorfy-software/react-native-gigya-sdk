@@ -11,18 +11,14 @@ export const initialState: GigyaSdkStateType = {
 
 export let state: GigyaSdkStateType = initialState
 
-export function setState(
-  data: Partial<GigyaSdkStateType>
-): Promise<GigyaSdkStateType> {
+export function setState(data: Partial<GigyaSdkStateType>): Promise<GigyaSdkStateType> {
   return new Promise(async (resolve, reject) => {
     try {
       const oldState = await getState()
       const newState = { ...oldState, ...data }
       const setItem = data.storage?.setItem || oldState.storage?.setItem
 
-      await Promise.resolve(
-        setItem?.(newState.storageKey, JSON.stringify(newState))
-      )
+      await Promise.resolve(setItem?.(newState.storageKey, JSON.stringify(newState)))
 
       state = newState
 

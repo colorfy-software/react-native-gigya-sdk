@@ -1,7 +1,4 @@
-import type {
-  GigyaSdkAccountInfoType,
-  GigyaSdkRegisteredAccountType,
-} from '../types'
+import type { GigyaSdkAccountInfoType, GigyaSdkRegisteredAccountType } from '../types'
 
 import setSession from './setSession'
 import getAccountInfo from './getAccountInfo'
@@ -16,9 +13,7 @@ export default function (options?: {
 }): Promise<GigyaSdkAccountInfoType | GigyaSdkRegisteredAccountType> {
   return new Promise(async (resolve, reject) => {
     try {
-      const unacceptedConsentSchemas = await getUnacceptedConsentSchemas<
-        string[]
-      >()
+      const unacceptedConsentSchemas = await getUnacceptedConsentSchemas<string[]>()
 
       if (unacceptedConsentSchemas) {
         await acceptConsentSchemas(unacceptedConsentSchemas, {
@@ -38,10 +33,7 @@ export default function (options?: {
 
         if (!options?.noSetSession) {
           try {
-            await setSession(
-              response.sessionInfo.sessionToken,
-              response.sessionInfo.sessionSecret
-            )
+            await setSession(response.sessionInfo.sessionToken, response.sessionInfo.sessionSecret)
           } catch (e) {
             console.log(e)
           }

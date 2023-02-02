@@ -11,9 +11,7 @@ export default function (): Promise<GigyaSdkStateType> {
 
       let output: GigyaSdkStateType | null = null
 
-      const rehydrateState = async (
-        storeKey: string
-      ): Promise<GigyaSdkStateType | null> => {
+      const rehydrateState = async (storeKey: string): Promise<GigyaSdkStateType | null> => {
         let persistedState = null
 
         try {

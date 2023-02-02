@@ -1,6 +1,4 @@
-export default function <ParamsType extends unknown>(
-  params: ParamsType
-): string {
+export default function <ParamsType extends unknown>(params: ParamsType): string {
   return JSON.stringify(params, (key: string, value: string) =>
     /**
      * NOTE: Stringifies params from:

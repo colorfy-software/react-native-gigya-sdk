@@ -1,10 +1,7 @@
 import { NativeModules } from 'react-native'
 const { GigyaSdk } = NativeModules
 
-import type {
-  GigyaSdkAccountInfoType,
-  GigyaSdkSocialProvidersType,
-} from '../types'
+import type { GigyaSdkAccountInfoType, GigyaSdkSocialProvidersType } from '../types'
 
 import getState from './getState'
 import isGigyaError from './isGigyaError'
@@ -26,10 +23,7 @@ export default function <ParamsType extends Record<string, unknown>>(
       }
 
       const response = await handleSdkCall<GigyaSdkAccountInfoType>(
-        GigyaSdk.socialLogin(
-          provider,
-          formatParams({ regToken, loginMode: 'link', ...(rest && rest) })
-        )
+        GigyaSdk.socialLogin(provider, formatParams({ regToken, loginMode: 'link', ...(rest && rest) }))
       )
 
       await setState({ UID: response.UID })

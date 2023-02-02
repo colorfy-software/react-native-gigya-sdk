@@ -1,10 +1,7 @@
 import { NativeModules } from 'react-native'
 const { GigyaSdk } = NativeModules
 
-import type {
-  GigyaSdkAccountInfoType,
-  GigyaSdkSocialProvidersType,
-} from '../types'
+import type { GigyaSdkAccountInfoType, GigyaSdkSocialProvidersType } from '../types'
 
 import logout from './logout'
 import getState from './getState'
@@ -35,10 +32,7 @@ export default function <ParamsType extends Record<string, unknown>>(
       await logout()
 
       const response = await handleSdkCall<GigyaSdkAccountInfoType>(
-        GigyaSdk.socialLogin(
-          provider,
-          formatParams({ lang, ...(rest && rest) })
-        )
+        GigyaSdk.socialLogin(provider, formatParams({ lang, ...(rest && rest) }))
       )
 
       await setState({ UID: response.UID })

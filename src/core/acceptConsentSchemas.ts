@@ -13,10 +13,7 @@ type OptionsType = {
   noUID?: boolean
 }
 
-export default function <
-  OutputType,
-  ConsentSchemasKeyType extends string[] = string[]
->(
+export default function <OutputType, ConsentSchemasKeyType extends string[] = string[]>(
   consentSchemaKeys: ConsentSchemasKeyType,
   options?: OptionsType
 ): Promise<OutputType> {
@@ -55,17 +52,14 @@ export default function <
         }
       }
 
-      const response = await sendApiCall<OutputType, ApiCallParamsType>(
-        'accounts.setAccountInfo',
-        {
-          ...(options?.noUID && {
-            regToken: options?.regToken || state.regToken?.value,
-          }),
-          ...(!options?.noUID && { UID: options?.UID || state.UID }),
-          lang: state.lang,
-          preferences,
-        }
-      )
+      const response = await sendApiCall<OutputType, ApiCallParamsType>('accounts.setAccountInfo', {
+        ...(options?.noUID && {
+          regToken: options?.regToken || state.regToken?.value,
+        }),
+        ...(!options?.noUID && { UID: options?.UID || state.UID }),
+        lang: state.lang,
+        preferences,
+      })
 
       resolve(response)
     } catch (e) {
