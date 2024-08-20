@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import EncryptedStorage from 'react-native-encrypted-storage'
 import { Button, StyleSheet, Text, View } from 'react-native'
-import GigyaSdk, { GigyaSdkAccountInfoType } from 'react-native-gigya-sdk'
+import GigyaSdk, { GigyaSdkAccountInfoType, GigyaSdkDataCenters } from 'react-native-gigya-sdk'
 
 const CONFIG = {
   LANG: 'en',
   API_SECRET: '',
   API_KEY: '__GIGYA_API_KEY__',
-  DATA_CENTER: '__GIGYA_DATA_CENTER', // eg: 'eu1.gigya.com'
+  DATA_CENTER: GigyaSdkDataCenters.EU1,
   STORAGE_KEY: 'GigyaSdkEncryptedStorageKey',
 
   // Just here to speed up your testing, not needed by the library config.

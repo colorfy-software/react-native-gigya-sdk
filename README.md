@@ -97,16 +97,16 @@ You can now initialize the SDK with your [**`apiKey`**](https://help.sap.com/doc
 
 
 ```ts
-import GigyaSdk from 'react-native-gigya-sdk'
 import EncryptedStorage from 'react-native-encrypted-storage'
+import GigyaSdk, { GigyaSdkDataCenterEnum } from 'react-native-gigya-sdk'
 
 // Before anything we initialize the SDK.
 GigyaSdk.init({
   lang: 'en',
   storage: EncryptedStorage,
   storageKey: 'RANDOM_STRING'
-  dataCenter: 'eu1.gigya.com',
   apiKey: 'INSERT_GIGYA_API_KEY',
+  dataCenter: GigyaSdkDataCenterEnum.EU1,
 })
 
 // Now we can use it.

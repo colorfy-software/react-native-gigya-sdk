@@ -293,7 +293,7 @@ PODS:
     - glog
   - react-native-encrypted-storage (4.0.2):
     - React-Core
-  - react-native-gigya-sdk (1.1.1):
+  - react-native-gigya-sdk (1.3.0):
     - Gigya
     - React-Core
   - React-perflogger (0.67.5)
@@ -549,7 +549,7 @@ SPEC CHECKSUMS:
   React-jsinspector: ec4fe4f65ccf9d67c8429dda955d3412db8a25ef
   React-logger: 85f4ef06b9723714b2dfa5b0e5502b673b271b58
   react-native-encrypted-storage: e78d848ce0fb663c2ce306e37921d026809322e6
-  react-native-gigya-sdk: 911146291f367b7f7f53bcf61e4238930206a8f7
+  react-native-gigya-sdk: 3046899c31c791ed0cbc5a3cdd634ceb2454bbce
   React-perflogger: d32ee13196f4ae2e4098fb7f8e7ed4f864c6fb0f
   React-RCTActionSheet: 81779c09e34a6a3d6b15783407ba9016a774f535
   React-RCTAnimation: b778eaaa42a884abcc5719035a7a0b2f54672658
@@ -567,4 +567,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 3e0c55027e194295800b73c1d526d9351360ab5e
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.15.2
