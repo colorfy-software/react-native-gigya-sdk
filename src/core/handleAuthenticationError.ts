@@ -23,10 +23,10 @@ import saveAuthenticationAttempt from '../internals/saveAuthenticationAttempt'
 type ProviderType = Exclude<Exclude<GigyaSdkStateType['authenticationAttempt'], undefined>['type'], undefined>
 
 type OptionsType = {
-  error?: GigyaSdkErrorType
-  noSetSession?: boolean
   noFinalize?: boolean
+  noSetSession?: boolean
   isRegistration?: boolean
+  error?: GigyaSdkErrorType
 }
 
 type ActionRequiredType =

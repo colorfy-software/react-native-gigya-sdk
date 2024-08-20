@@ -7,6 +7,7 @@ export default function (): Promise<boolean> {
   return new Promise(async (resolve, reject) => {
     try {
       const isLoggedIn = await GigyaSdk.isLoggedIn()
+
       let response = true
 
       if (isLoggedIn) {

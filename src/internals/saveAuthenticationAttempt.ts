@@ -11,8 +11,8 @@ export default function (type: ProviderType, error: GigyaSdkErrorType): Promise<
   return new Promise<void>(async (resolve, reject) => {
     try {
       const state = await getState()
-      const incomingRegToken = error?.payload?.regToken
       const existingRegToken = state.regToken?.value
+      const incomingRegToken = error?.payload?.regToken
 
       const value = incomingRegToken || existingRegToken
       const expirationDate =

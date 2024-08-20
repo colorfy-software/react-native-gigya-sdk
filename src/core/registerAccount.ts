@@ -23,6 +23,7 @@ export default function <ParamsType extends Record<string, unknown>>(
   return new Promise(async (resolve, reject) => {
     try {
       await logout()
+
       const state = await getState()
 
       let values: DefaultParamsType = params || {}

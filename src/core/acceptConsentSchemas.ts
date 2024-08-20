@@ -2,15 +2,15 @@ import getState from './getState'
 import sendApiCall from './sendApiCall'
 
 type ApiCallParamsType = {
-  regToken?: string
   lang: string
+  regToken?: string
   preferences: Record<string, Record<string, unknown>>
 }
 
 type OptionsType = {
   UID?: string
-  regToken?: string
   noUID?: boolean
+  regToken?: string
 }
 
 export default function <OutputType, ConsentSchemasKeyType extends string[] = string[]>(
