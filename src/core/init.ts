@@ -3,29 +3,33 @@ const { GigyaSdk } = NativeModules
 
 import type { GigyaSdkStateType } from '../types'
 
-import { initialState, setState } from '../internals/state'
+import getState from './getState'
+import { setState } from '../internals/state'
 
 interface ConfigType {
-  dataCenter: string
   lang?: GigyaSdkStateType['lang']
-  apiKey: GigyaSdkStateType['apiKey']
+  apiKey?: GigyaSdkStateType['apiKey']
+  storage?: GigyaSdkStateType['storage']
+  dataCenter?: GigyaSdkStateType['dataCenter']
   storageKey?: GigyaSdkStateType['storageKey']
-  storage: NonNullable<GigyaSdkStateType['storage']>
 }
 
 export default function (config: ConfigType): Promise<boolean> {
   return new Promise(async (resolve, reject) => {
     try {
-      const newState: Partial<GigyaSdkStateType> = {
-        apiKey: config.apiKey,
-        storage: config.storage,
-        lang: config.lang || initialState.lang,
-        storageKey: config.storageKey,
+      await setState(config)
+
+      const updatedState = await getState()
+
+      const updatedConfig: ConfigType = {
+        lang: updatedState.lang,
+        apiKey: updatedState.apiKey,
+        storage: updatedState.storage!,
+        dataCenter: updatedState.dataCenter,
+        storageKey: updatedState.storageKey,
       }
 
-      await setState(newState)
-
-      resolve(GigyaSdk.initialize(config))
+      resolve(GigyaSdk.initialize(updatedConfig))
     } catch (e) {
       reject(e)
     }
