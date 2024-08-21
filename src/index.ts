@@ -7,6 +7,7 @@ const GigyaSdk = {
   ErrorsTypeIds: GigyaSdkErrors,
 
   acceptConsentSchemas: core.acceptConsentSchemas,
+  declineConsentSchemas: core.declineConsentSchemas,
   deleteAccount: core.deleteAccount,
   finalizeRegistration: core.finalizeRegistration,
   getAccount: core.getAccount,
