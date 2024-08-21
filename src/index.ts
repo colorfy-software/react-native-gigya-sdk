@@ -13,6 +13,7 @@ const GigyaSdk = {
   getAccountInfo: core.getAccountInfo,
   getAllSchemas: core.getAllSchemas,
   getConflictingAccount: core.getConflictingAccount,
+  getOptionalConsentSchemas: core.getOptionalConsentSchemas,
   getRequiredConsentSchemas: core.getRequiredConsentSchemas,
   getState: core.getState,
   getUnacceptedConsentSchemas: core.getUnacceptedConsentSchemas,
