@@ -77,7 +77,7 @@ import Foundation
 ```graddle
 buildscript {
     ext {
-      gigyaCoreSdkVersion = "core-v5.1.5"
+      gigyaCoreSdkVersion = "7.1.1"
     }
 }
 ```
@@ -92,7 +92,7 @@ You can now initialize the SDK with your [**`apiKey`**](https://help.sap.com/doc
 [**`lang`**](https://help.sap.com/docs/SAP_CUSTOMER_DATA_CLOUD/8b8d6fffe113457094a17701f63e3d6a/4141d83470b21014bbc5a10ce4041860.html?locale=en-US#language-support),
 **`storage`** solution & desired **storageKey**.
 
-❗ **Please make sure your storage library exposes `getItem()` and `setItem()` functions.**
+❗ **Please make sure your storage library exposes `getItem()` and `setItem()` functions or provided them yourself.**
 
 
 
