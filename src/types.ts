@@ -194,14 +194,18 @@ export type GigyaSdkConsentsStatementsType<
   preferences: GigyaSdkConsentPreferencesType<ConsentIds, Lang>
 }
 
-export type GigyaSdkConsentPreferencesType<ConsentIds extends string = string, Lang extends string = string> = Record<
-  ConsentIds,
-  GigyaSdkConsentStatementType<Lang>
->
+export type GigyaSdkConsentPreferencesType<ConsentIds extends string = string, Lang extends string = string> = {
+  terms: Record<ConsentIds, GigyaSdkConsentStatementType<Lang>>
+  privacy: Record<ConsentIds, GigyaSdkConsentStatementType<Lang>>
+} & Record<ConsentIds, GigyaSdkConsentStatementType<Lang>>
 
 export type GigyaSdkConsentWriteAccessType = 'clientCreate' | 'clientModify' | 'serverOnly'
 
 export interface GigyaSdkConsentStatementType<Lang extends string = string> {
+  /**
+   * Gigya Preferences Object - Old Consents.
+   * @see: https://help.sap.com/docs/SAP_CUSTOMER_DATA_CLOUD/8b8d6fffe113457094a17701f63e3d6a/4169054f70b21014bbc5a10ce4041860.html
+   */
   tags: unknown[]
   isActive: boolean
   defaultLang?: Lang
@@ -212,6 +216,17 @@ export interface GigyaSdkConsentStatementType<Lang extends string = string> {
   enforceLocaleReconsent: boolean
   consentVaultRetentionPeriod: number
   writeAccess: GigyaSdkConsentWriteAccessType
+
+  /**
+   * Gigya Preferences Object - New Consents.
+   * @see: https://help.sap.com/docs/SAP_CUSTOMER_DATA_CLOUD/8b8d6fffe113457094a17701f63e3d6a/1f1f6159d48a42bf9168c3d5567f1acd.html
+   */
+  lang?: Lang
+  docVersion?: number
+  isConsentGranted?: true
+  actionTimestamp?: string
+  lastConsentModified?: string
+  locales?: Record<Lang, Record<'docVersion', number>>
 }
 
 export interface GigyaSdkConsentSchemaType {
