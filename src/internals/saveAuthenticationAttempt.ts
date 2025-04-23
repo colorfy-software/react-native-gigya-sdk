@@ -11,6 +11,7 @@ export default function (type: ProviderType, error: GigyaSdkErrorType): Promise<
   return new Promise<void>(async (resolve, reject) => {
     try {
       const state = await getState()
+
       const existingRegToken = state.regToken?.value
       const incomingRegToken = error?.payload?.regToken
 
@@ -21,10 +22,14 @@ export default function (type: ProviderType, error: GigyaSdkErrorType): Promise<
           : state.regToken?.expirationDate
       const isStillValid = expirationDate && new Date(expirationDate).getTime() >= new Date().getTime()
 
+      const existingSessionInfo = state.sessionInfo
+      const incomingSessionInfo = error?.payload?.sessionInfo
+
       await setState({
         error: error ?? state.error,
         authenticationAttempt: { type },
         regToken: { value, expirationDate, isStillValid },
+        sessionInfo: incomingSessionInfo || existingSessionInfo,
       })
 
       resolve()

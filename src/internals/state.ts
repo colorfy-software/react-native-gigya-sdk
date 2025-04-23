@@ -1,4 +1,4 @@
-import { GigyaSdkDataCenters, GigyaSdkStateType } from '../types'
+import { GigyaSdkDataCenters, GigyaSdkLinkAccountVersions, GigyaSdkStateType } from '../types'
 
 import getState from '../core/getState'
 
@@ -8,6 +8,7 @@ export const initialState: GigyaSdkStateType = {
   apiKey: '',
   storageKey: 'GigyaSdkState',
   dataCenter: GigyaSdkDataCenters.EU1,
+  linkAccountVersion: GigyaSdkLinkAccountVersions.V1,
 }
 
 export let state: GigyaSdkStateType = initialState

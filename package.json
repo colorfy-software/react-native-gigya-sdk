@@ -1,6 +1,6 @@
 {
   "name": "react-native-gigya-sdk",
-  "version": "2.2.0",
+  "version": "2.3.0-alpha.6",
   "description": "SAP CDC/Gigya SDK for your React Native applications",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -84,8 +84,10 @@
     "release-it": "^17.6.0",
     "typescript": "^4.2.2"
   },
+  "dependencies": {
+    "base-64": "*"
+  },
   "peerDependencies": {
-    "base-64": "*",
     "react": "*",
     "react-native": "*"
   },

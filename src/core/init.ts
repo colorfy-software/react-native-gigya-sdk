@@ -12,6 +12,7 @@ interface ConfigType {
   storage?: GigyaSdkStateType['storage']
   dataCenter?: GigyaSdkStateType['dataCenter']
   storageKey?: GigyaSdkStateType['storageKey']
+  linkAccountVersion?: GigyaSdkStateType['linkAccountVersion']
 }
 
 export default function (config: ConfigType): Promise<boolean> {
@@ -27,6 +28,7 @@ export default function (config: ConfigType): Promise<boolean> {
         storage: updatedState.storage!,
         dataCenter: updatedState.dataCenter,
         storageKey: updatedState.storageKey,
+        linkAccountVersion: updatedState.linkAccountVersion,
       }
 
       resolve(GigyaSdk.initialize(updatedConfig))

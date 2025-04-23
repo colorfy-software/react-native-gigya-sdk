@@ -3622,10 +3622,10 @@ react-native-codegen@^0.0.8:
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
 
-react-native-encrypted-storage@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/react-native-encrypted-storage/-/react-native-encrypted-storage-4.0.2.tgz#c7d59b1d3ff2f80d572be3e85aaab3fdee16744a"
-  integrity sha512-vneDkHGDuTvLQjUBztqb2YI8QoH1zxdJonPGTS+g57lfJZff9fAjoLSSb6NgMBebpXFcK3I3sEresGyL+3AArw==
+react-native-fast-secure-storage@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-fast-secure-storage/-/react-native-fast-secure-storage-1.2.2.tgz#78afbaa5dca63872f8df56672d6b593227e87524"
+  integrity sha512-lRFiEVqpZUCa/pEQ/76TTaEOacYGwE3d8vkoNe+Jco2t/WIf7jwZU/NGKn8e9zMOdHD5fpwOV5tRYrodGsoGnA==
 
 react-native@0.67.5:
   version "0.67.5"

@@ -45,7 +45,7 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
         return "GigyaSdk";
     }
 
-    public static String accountToJSONString(final Object object) {
+    public static String objectToJSONString(final Object object) {
         return new Gson().toJson(object);
     }
 
@@ -115,10 +115,44 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void getSession(final Promise promise) {
+        try {
+            SessionInfo sessionInfo = mGigya.getSession();
+
+            if (sessionInfo != null) {
+                promise.resolve(objectToJSONString(sessionInfo));
+            } else {
+                promise.resolve(null);
+            }
+        } catch (Exception e) {
+            promise.reject("getSessionErrorJSON", e);
+        }
+    }
+
+    @ReactMethod
     public void setSession(final String sessionToken, final String sessionSecret, final Promise promise) {
         SessionInfo sessionInfo = new SessionInfo(sessionSecret, sessionToken);
         mGigya.setSession(sessionInfo);
         promise.resolve(true);
+    }
+
+    @ReactMethod
+    public void isSessionValid(final Promise promise) {
+        mGigya.verifySession(new GigyaCallback<GigyaApiResponse>() {
+            @Override
+            public void onSuccess(GigyaApiResponse response) {
+                try {
+                    promise.resolve(response.getErrorCode() == 0);
+                } catch (Exception e) {
+                    promise.reject("isSessionValidErrorJSON", e);
+                }
+            }
+
+            @Override
+            public void onError(GigyaError gigyaError) {
+                promise.reject("isSessionValidErrorJSON", gigyaError.getData());
+            }
+        });
     }
 
     @ReactMethod
@@ -127,15 +161,15 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
             @Override
             public void onSuccess(GigyaAccount gigyaAccount) {
                 try {
-                    promise.resolve(accountToJSONString(gigyaAccount));
+                    promise.resolve(objectToJSONString(gigyaAccount));
                 } catch (Exception e) {
-                    promise.reject("getAccountErrorJSON", "{}", e);
+                    promise.reject("getAccountErrorJSON", e);
                 }
             }
 
             @Override
             public void onError(GigyaError gigyaError) {
-
+                promise.reject("getAccountErrorJSON", gigyaError.getData());
             }
         });
     }
@@ -151,7 +185,7 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
 
                 @Override
                 public void onSuccess(GigyaAccount gigyaAccount) {
-                    promise.resolve(accountToJSONString(gigyaAccount));
+                    promise.resolve(objectToJSONString(gigyaAccount));
                 }
             });
         } catch (Exception e) {
@@ -192,7 +226,7 @@ class GigyaLoginHandler extends GigyaLoginCallback<GigyaAccount> {
     @Override
     public void onSuccess(GigyaAccount gigyaAccount) {
         try {
-            mPromise.resolve(GigyaSdkModule.accountToJSONString(gigyaAccount));
+            mPromise.resolve(GigyaSdkModule.objectToJSONString(gigyaAccount));
         } catch (Exception e) {
             mPromise.reject("getAccountErrorJSON", "{}", e);
         }
