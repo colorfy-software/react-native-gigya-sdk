@@ -101,6 +101,12 @@ RCT_EXTERN_METHOD(
 )
 
 RCT_EXTERN_METHOD(
+  getSession:
+  (RCTPromiseResolveBlock)resolve
+  rejecter:(RCTPromiseRejectBlock)reject
+)
+
+RCT_EXTERN_METHOD(
   setSession:
   (NSString) sessionToken
   sessionSecret:(NSString) sessionSecret

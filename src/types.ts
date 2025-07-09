@@ -376,3 +376,9 @@ export interface GigyaSdkConflictingAccountType {
   loginID: string
   loginProviders: GigyaSdkLoginProvidersType[]
 }
+
+export interface GigyaSdkSessionType {
+  sessionToken: string
+  sessionSecret: string
+  sessionExpirationTimestamp: number
+}

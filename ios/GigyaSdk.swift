@@ -12,18 +12,46 @@ import Gigya
 
 @objc(GigyaSdk)
 class GigyaSdk: NSObject {
-
+  
   @objc class func requiresMainQueueSetup() -> Bool {
     return false
   }
-
-    func codableToJSONString<T: Encodable> (data: T) throws -> String {
-    let jsonEncoder = JSONEncoder()
-    let jsonData = try jsonEncoder.encode(data)
-    return String(data: jsonData, encoding: .utf8)!
-  }
   
-  func handleLoginAPIError(error: LoginApiError<GigyaAccount>, rejecter reject: @escaping RCTPromiseRejectBlock) {
+  func mapResponseToStruct(data: GigyaDictionary) -> GigyaSdkApiResponse? {
+    
+    // Safely extract values from the dictionary
+    guard let time = data["time"]?.value as? String,
+          let callId = data["callId"]?.value as? String,
+          let statusCode = data["statusCode"]?.value as? Int,
+          let apiVersion = data["apiVersion"]?.value as? Int,
+          let statusReason = data["statusReason"]?.value as? String,
+          let errorCode = data["errorCode"]?.value as? Int
+    else {
+      return nil  // If any required value is missing or of the wrong type, return nil
+    }
+    
+    // Optionally extract the values that could be nil
+    let errorMessage = data["errorMessage"]?.value as? String
+    let errorDetails = data["errorDetails"]?.value as? String
+    let fullEventName = data["fullEventName"]?.value as? String
+    
+    // Return the mapped struct
+    return GigyaSdkApiResponse(
+      time: time,
+      callId: callId,
+      errorCode: errorCode,
+      statusCode: statusCode,
+      apiVersion: apiVersion,
+      statusReason: statusReason,
+      errorMessage: errorMessage,
+      errorDetails: errorDetails,
+      fullEventName: fullEventName
+    )
+  }
+
+  func handleLoginAPIError(
+    error: LoginApiError<GigyaAccount>, rejecter reject: @escaping RCTPromiseRejectBlock
+  ) {
     
     let errorMessage = self.parseLoginAPIError(error: error.error)
     var errorCode = "undefinedError"
@@ -35,7 +63,7 @@ class GigyaSdk: NSObject {
       case .pendingRegistration(_):
         errorCode = "pendingRegistration"
         break
-      case .conflitingAccount(_):
+      case .conflitingAccount(resolver: _):
         errorCode = "conflictingAccount"
         break
       case .pendingVerification(_):
@@ -49,6 +77,9 @@ class GigyaSdk: NSObject {
         break
       case .some(.pendingTwoFactorVerification(_, _, _)):
         errorCode = "pendingTwoFactorVerification"
+        break
+      case .some(.captchaRequired):
+        errorCode = "captchaRequired"
         break
     }
     
@@ -77,27 +108,30 @@ class GigyaSdk: NSObject {
   }
   
   func parseParamsString(params: String) throws -> [String: Any] {
-    return (try JSONSerialization.jsonObject(with: Data(params.utf8), options: []) as? [String: Any])!
+    return
+    (try JSONSerialization.jsonObject(with: Data(params.utf8), options: []) as? [String: Any])!
   }
   
   func stringToGigyaProvider(provider: String) -> GigyaSocialProviders {
     switch provider {
-      case "apple":
-          return GigyaSocialProviders.apple
       case "amazon":
-          return  GigyaSocialProviders.amazon
+        return GigyaSocialProviders.amazon
+      case "facebook":
+        return GigyaSocialProviders.facebook
       case "google":
-        return  GigyaSocialProviders.google
+        return GigyaSocialProviders.google
       default:
-          return  GigyaSocialProviders.facebook
+        return GigyaSocialProviders.apple
     }
   }
-
+  
   @objc func initialize(
     _ config: NSDictionary,
     resolver resolve: @escaping RCTPromiseResolveBlock,
-    rejecter reject: @escaping RCTPromiseRejectBlock) {
-    Gigya.sharedInstance().initFor(apiKey: config["apiKey"] as! String, apiDomain: config["dataCenter"] as? String)
+    rejecter reject: @escaping RCTPromiseRejectBlock
+  ) {
+    Gigya.sharedInstance().initFor(
+      apiKey: config["apiKey"] as! String, apiDomain: config["dataCenter"] as? String)
     resolve(true)
   }
   
@@ -106,11 +140,11 @@ class GigyaSdk: NSObject {
     parameters params: String,
     resolver resolve: @escaping RCTPromiseResolveBlock,
     rejecter reject: @escaping RCTPromiseRejectBlock
-  ) -> Void {
+  ) {
     do {
       let serializedParams = try parseParamsString(params: params)
-      Gigya.sharedInstance().send(api: api, params: serializedParams) { (res) in
-        switch res {
+      Gigya.sharedInstance().send(api: api, params: serializedParams) { result in
+        switch result {
           case .success(let data):
             do {
               try resolve(self.codableToJSONString(data: data))
@@ -127,70 +161,70 @@ class GigyaSdk: NSObject {
                 }
               default:
                 reject("sendApiError", "{}", error)
-              }
+            }
         }
       }
     } catch let error as NSError {
-        reject("apiErrorParamsInvalid", "{}", error)
+      reject("apiErrorParamsInvalid", "{}", error)
     }
   }
-
+  
   @objc func registerAccount(
-    _ email:  String,
-    password pass:  String,
+    _ email: String,
+    password pass: String,
     parameters params: String,
     resolver resolve: @escaping RCTPromiseResolveBlock,
     rejecter reject: @escaping RCTPromiseRejectBlock
-  ) -> Void {
+  ) {
     
     do {
       let serializedParams = try parseParamsString(params: params)
       
       var promiseHandled = false
       
-      Gigya.sharedInstance().register(email: email, password: pass, params: serializedParams) {result in
-        if(promiseHandled) {
+      Gigya.sharedInstance().register(email: email, password: pass, params: serializedParams) {
+        result in
+        if promiseHandled {
           return
         }
         promiseHandled = true
         
         switch result {
-        case .success(let data):
-          do {
-            resolve(try self.codableToJSONString(data: data))
-          } catch {
-            reject("registerErrorJSON","{}", error)
-          }
-        case .failure(let registerError):
-          self.handleLoginAPIError(error: registerError, rejecter: reject)
+          case .success(let data):
+            do {
+              resolve(try self.codableToJSONString(data: data))
+            } catch {
+              reject("registerErrorJSON", "{}", error)
+            }
+          case .failure(let registerError):
+            self.handleLoginAPIError(error: registerError, rejecter: reject)
         }
       }
     } catch let error as NSError {
-        reject("apiErrorParamsInvalid", "{}", error)
+      reject("apiErrorParamsInvalid", "{}", error)
     }
   }
   
   @objc func login(
-    _ email:  String,
-    password pass:  String,
+    _ email: String,
+    password pass: String,
     parameters params: String,
     resolver resolve: @escaping RCTPromiseResolveBlock,
     rejecter reject: @escaping RCTPromiseRejectBlock
-  ) -> Void {
+  ) {
     do {
       let serializedParams = try parseParamsString(params: params)
       
       var promiseHandled = false
       
-      Gigya.sharedInstance().login(
-          loginId: email, password: pass, params: serializedParams
-      ) {result in
-          if(promiseHandled) {
-            return
-          }
-          promiseHandled = true
+      Gigya.sharedInstance().login(loginId: email, password: pass, params: serializedParams) {
+        result in
+        if promiseHandled {
+          return
+        }
+        promiseHandled = true
         
-          switch result {
+        switch result {
           case .success(let data):
             do {
               resolve(try self.codableToJSONString(data: data))
@@ -199,32 +233,31 @@ class GigyaSdk: NSObject {
             }
           case .failure(let loginError):
             self.handleLoginAPIError(error: loginError, rejecter: reject)
-          }
+        }
       }
     } catch let error as NSError {
-        reject("apiErrorParamsInvalid", "{}", error)
+      reject("apiErrorParamsInvalid", "{}", error)
     }
   }
-
+  
   @objc func socialLogin(
-    _ provider:  String,
+    _ provider: String,
     parameters params: String,
     resolver resolve: @escaping RCTPromiseResolveBlock,
     rejecter reject: @escaping RCTPromiseRejectBlock
-  ) -> Void {
+  ) {
     do {
       let serializedParams = try parseParamsString(params: params)
       
-      let gigyaProvider:GigyaSocialProviders = self.stringToGigyaProvider(provider: provider)
+      let gigyaProvider: GigyaSocialProviders = self.stringToGigyaProvider(provider: provider)
       
       var promiseHandled = false
       DispatchQueue.main.async {
         Gigya.sharedInstance().login(
-          with: gigyaProvider,
-          viewController: UIApplication.getTopViewController()!,
+          with: gigyaProvider, viewController: UIApplication.getTopViewController()!,
           params: serializedParams
-        ) {result in
-          if(promiseHandled) {
+        ) { result in
+          if promiseHandled {
             return
           }
           promiseHandled = true
@@ -242,16 +275,36 @@ class GigyaSdk: NSObject {
         }
       }
     } catch let error as NSError {
-        reject("apiErrorParamsInvalid", "{}", error)
+      reject("apiErrorParamsInvalid", "{}", error)
     }
   }
-
+  
+  @objc func getSession(
+    _ resolve: @escaping RCTPromiseResolveBlock,
+    rejecter reject: @escaping RCTPromiseRejectBlock
+  ) {
+    do {
+      let data: GigyaSession? = Gigya.sharedInstance().getSession()
+      resolve(
+        try self.codableToJSONString(
+          data: GigyaSdkSession(
+            sessionToken: data?.token ?? "",
+            sessionSecret: data?.secret,
+            sessionExpirationTimestamp: data?.sessionExpirationTimestamp
+          )
+        )
+      )
+    } catch let error as NSError {
+      reject("getSessionErrorJSON", "{}", error)
+    }
+  }
+  
   @objc func setSession(
     _ sessionToken: String,
     sessionSecret: String,
     resolver resolve: @escaping RCTPromiseResolveBlock,
     rejecter reject: @escaping RCTPromiseRejectBlock
-  ) -> Void {
+  ) {
     let session: GigyaSession = GigyaSession(sessionToken: sessionToken, secret: sessionSecret)!
     Gigya.sharedInstance().setSession(session)
     resolve(true)
@@ -260,8 +313,8 @@ class GigyaSdk: NSObject {
   @objc func getAccount(
     _ resolve: @escaping RCTPromiseResolveBlock,
     rejecter reject: @escaping RCTPromiseRejectBlock
-  ) -> Void {
-    Gigya.sharedInstance().getAccount(false){ result in
+  ) {
+    Gigya.sharedInstance().getAccount(false) { result in
       switch result {
         case .success(let data):
           do {
@@ -274,16 +327,16 @@ class GigyaSdk: NSObject {
       }
     }
   }
-
+  
   @objc func setAccount(
     _ params: String,
     resolver resolve: @escaping RCTPromiseResolveBlock,
     rejecter reject: @escaping RCTPromiseRejectBlock
-  ) -> Void {
+  ) {
     do {
       let serializedParams = try parseParamsString(params: params)
-      Gigya.sharedInstance().setAccount(with: serializedParams) { (res) in
-        switch res {
+      Gigya.sharedInstance().setAccount(with: serializedParams) { result in
+        switch result {
           case .success(let data):
             do {
               try resolve(self.codableToJSONString(data: data))
@@ -300,30 +353,30 @@ class GigyaSdk: NSObject {
                 }
               default:
                 reject("setAccountError", "{}", error)
-              }
+            }
         }
       }
     } catch let error as NSError {
-        reject("apiErrorParamsInvalid", "{}", error)
+      reject("apiErrorParamsInvalid", "{}", error)
     }
   }
   
   @objc func isLoggedIn(
-    _ resolve:RCTPromiseResolveBlock,
-    rejecter reject:RCTPromiseRejectBlock
-  ) -> Void {
-      resolve(Gigya.sharedInstance().isLoggedIn())
+    _ resolve: RCTPromiseResolveBlock,
+    rejecter reject: RCTPromiseRejectBlock
+  ) {
+    resolve(Gigya.sharedInstance().isLoggedIn())
   }
-    
+  
   @objc func logout(
     _ resolve: @escaping RCTPromiseResolveBlock,
     rejecter reject: @escaping RCTPromiseRejectBlock
-  ) -> Void {
-    if(!Gigya.sharedInstance().isLoggedIn()) {
+  ) {
+    if !Gigya.sharedInstance().isLoggedIn() {
       resolve(true)
     }
     
-    Gigya.sharedInstance().logout(){ result in
+    Gigya.sharedInstance().logout { result in
       switch result {
         case .success(let logoutResult):
           resolve(logoutResult)
@@ -332,5 +385,4 @@ class GigyaSdk: NSObject {
       }
     }
   }
-  
 }

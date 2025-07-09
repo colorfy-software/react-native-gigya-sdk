@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		56A92C032D79DDF40044E28A /* GigyaSdkStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A92C022D79DDF40044E28A /* GigyaSdkStructures.swift */; };
 		56ABCDF025E2F8BE007780B2 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56ABCDEF25E2F8BE007780B2 /* UIApplicationExtension.swift */; };
 		56ABCE2025E2F9B3007780B2 /* GigyaSdk.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* GigyaSdk.m */; };
 		F4FF95D7245B92E800C19C63 /* GigyaSdk.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF95D6245B92E800C19C63 /* GigyaSdk.swift */; };
@@ -26,6 +27,7 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libGigyaSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGigyaSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		56A92C022D79DDF40044E28A /* GigyaSdkStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GigyaSdkStructures.swift; sourceTree = "<group>"; };
 		56ABCDEF25E2F8BE007780B2 /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* GigyaSdk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GigyaSdk.m; sourceTree = "<group>"; };
 		F4FF95D5245B92E700C19C63 /* GigyaSdk-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GigyaSdk-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -55,6 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				F4FF95D6245B92E800C19C63 /* GigyaSdk.swift */,
+				56A92C022D79DDF40044E28A /* GigyaSdkStructures.swift */,
 				56ABCDEF25E2F8BE007780B2 /* UIApplicationExtension.swift */,
 				B3E7B5891CC2AC0600A0062D /* GigyaSdk.m */,
 				F4FF95D5245B92E700C19C63 /* GigyaSdk-Bridging-Header.h */,
@@ -121,6 +124,7 @@
 			files = (
 				56ABCE2025E2F9B3007780B2 /* GigyaSdk.m in Sources */,
 				56ABCDF025E2F8BE007780B2 /* UIApplicationExtension.swift in Sources */,
+				56A92C032D79DDF40044E28A /* GigyaSdkStructures.swift in Sources */,
 				F4FF95D7245B92E800C19C63 /* GigyaSdk.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
