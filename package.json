@@ -84,8 +84,10 @@
     "release-it": "^17.6.0",
     "typescript": "^4.2.2"
   },
+  "dependencies": {
+    "base-64": "*"
+  },
   "peerDependencies": {
-    "base-64": "*",
     "react": "*",
     "react-native": "*"
   },

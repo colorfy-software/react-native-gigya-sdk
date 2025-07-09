@@ -32,6 +32,29 @@ export enum GigyaSdkDataCenters {
 }
 
 /**
+ * Determines which Link Accounts API version should the library use.
+ * Both SAP native SDKs are using the v2 by default (since `gigya-swift-sdk@1.7.2` & `gigya-android-sdk@7.1.4`).
+ * @default `V1'`
+ * @see https://help.sap.com/docs/SAP_CUSTOMER_DATA_CLOUD/8b8d6fffe113457094a17701f63e3d6a/a8653abdc4594c0e94d38809db1b93d7.html?locale=en-US
+ */
+export enum GigyaSdkLinkAccountVersions {
+  /**
+   * SAP CDC Link Account v1 API.
+   * Both SAP CDC native SDKs use the `v1` by default up until `gigya-swift-sdk@1.7.1` & `gigya-android-sdk@7.1.3`.
+   * @see https://github.com/SAP/gigya-swift-sdk/releases/tag/1.7.2
+   * @see https://github.com/SAP/gigya-android-sdk/releases/tag/core-v7.1.4
+   */
+  V1 = 'v1',
+  /**
+   * SAP CDC latest Link Account v2 API.
+   * Both SAP CDC native SDKs are now using the `v2` by default since `gigya-swift-sdk@1.7.2` & `gigya-android-sdk@7.1.4`.
+   * @see https://github.com/SAP/gigya-swift-sdk/releases/tag/1.7.2
+   * @see https://github.com/SAP/gigya-android-sdk/releases/tag/core-v7.1.4
+   */
+  V2 = 'v2',
+}
+
+/**
  * Internal state of the library.
  */
 export interface GigyaSdkStateType {
@@ -41,6 +64,8 @@ export interface GigyaSdkStateType {
   storageKey: string
   error?: GigyaSdkErrorType
   dataCenter: GigyaSdkDataCenters
+  linkAccountVersion?: GigyaSdkLinkAccountVersions
+  sessionInfo?: GigyaSdkLoginErrorPayloadType['sessionInfo']
   regToken?: {
     expirationDate?: Date
     isStillValid?: boolean
@@ -79,13 +104,16 @@ export enum GigyaSdkErrorCodes {
   PendingVerification = 206002,
   LoginIdDoesNotExist = 403047,
   PendingRegistration = 206001,
+  ConflictingAccountV2 = 409003,
   NotConnectedToNetwork = 400106,
   MaxRequestLimitReached = 403000,
   InvalidApiKeyParameter = 400093,
   UniqueIdentifierExists = 400003,
+  InvalidRequestSignature = 403003,
   InvalidLoginIdOrPassword = 403042,
   AccountTemporarilyLockedOut = 403120,
   ConsecutiveRequestLimitReached = 400125,
+  ConflictingAccountV1 = GigyaSdkErrorCodes.ConflictingAccount,
 }
 
 /**
@@ -121,13 +149,13 @@ export enum GigyaSdkErrors {
 export interface GigyaSdkApiResponseType {
   time: string
   callId: string
-  errorCode: number
   statusCode: number
   apiVersion?: number
   statusReason: string
   errorMessage?: string
   errorDetails?: string
   fullEventName?: string
+  errorCode: GigyaSdkErrorCodes
 }
 
 export interface GigyaSdkValidationErrorType {
@@ -164,18 +192,45 @@ export interface GigyaSdkLoginErrorPayloadAccountInfoType extends GigyaSdkApiRes
 }
 
 export interface GigyaSdkLoginErrorPayloadType extends GigyaSdkApiResponseType {
+  UID?: string
+  error?: string
+  isActive?: true
   newUser: boolean
   id_token: string
   regToken: string
   loginID?: string
+  created?: string
   apiVersion: number
+  isVerified?: false
+  lastLogin?: string
   errorDetails: string
+  accessToken?: string
   errorMessage: string
+  isRegistered?: false
+  lastUpdated?: string
+  UIDSignature?: string
+  isDefaultApp?: boolean
+  createdTimestamp?: number
   unverifiedEmail?: string[]
-  errorCode: GigyaSdkErrorCodes
+  oldestDataUpdated?: string
+  signatureTimestamp?: string
+  lastLoginTimestamp?: number
+  profile?: { email?: string }
+  lastUpdatedTimestamp?: number
+  oldestDataUpdatedTimestamp?: number
+  loginProvider?: GigyaSdkLoginProvidersType
+  socialProviders?: GigyaSdkLoginProvidersType
   loginProviders?: GigyaSdkLoginProvidersType[]
   validationErrors?: GigyaSdkValidationErrorType[]
   accountInfo: GigyaSdkLoginErrorPayloadAccountInfoType
+  provider?: Exclude<GigyaSdkLoginProvidersType, 'site'>
+  provider_uid?: Exclude<GigyaSdkLoginProvidersType, 'site'>
+  sessionInfo?: {
+    expires_in?: string
+    access_token?: string
+    provider?: Exclude<GigyaSdkLoginProvidersType, 'site'>
+    provider_uid?: Exclude<GigyaSdkLoginProvidersType, 'site'>
+  }
 }
 
 export interface GigyaSdkErrorType {
@@ -376,10 +431,7 @@ export interface GigyaSdkAccountInfoType extends GigyaSdkLoginType {
 }
 
 export interface GigyaSdkRegisteredAccountType extends GigyaSdkAccountInfoType {
-  sessionInfo: {
-    sessionToken: string
-    sessionSecret: string
-  }
+  sessionInfo: Omit<GigyaSdkSessionType, 'sessionExpirationTimestamp'>
 }
 
 export interface GigyaSdkConflictingAccountType {

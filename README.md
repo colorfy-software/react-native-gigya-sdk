@@ -90,7 +90,7 @@ buildscript {
 You can now initialize the SDK with your [**`apiKey`**](https://help.sap.com/docs/SAP_CUSTOMER_DATA_CLOUD/8b8d6fffe113457094a17701f63e3d6a/4143211270b21014bbc5a10ce4041860.html?locale=en-US#api-key-and-site-setup),
 [**`dataCenter`**](https://help.sap.com/viewer/8b8d6fffe113457094a17701f63e3d6a/LATEST/en-US/41573b6370b21014bbc5a10ce4041860.html), application
 [**`lang`**](https://help.sap.com/docs/SAP_CUSTOMER_DATA_CLOUD/8b8d6fffe113457094a17701f63e3d6a/4141d83470b21014bbc5a10ce4041860.html?locale=en-US#language-support),
-**`storage`** solution and desired **`storageKey`**.
+**`storage`** solution and desired **`storageKey`** & [**`linkAccountVersion`**](https://help.sap.com/docs/SAP_CUSTOMER_DATA_CLOUD/8b8d6fffe113457094a17701f63e3d6a/a8653abdc4594c0e94d38809db1b93d7.html).
 
 ❗ **Please make sure your storage library exposes `getItem()` and `setItem()` functions or provided them yourself.**
 
@@ -98,7 +98,7 @@ You can now initialize the SDK with your [**`apiKey`**](https://help.sap.com/doc
 
 ```ts
 import SecureStorage from 'react-native-fast-secure-storage'
-import GigyaSdk, { GigyaSdkDataCenterEnum } from 'react-native-gigya-sdk'
+import GigyaSdk, { GigyaSdkDataCenterEnum, GigyaSdkLinkAccountVersions } from 'react-native-gigya-sdk'
 
 // Before anything we initialize the SDK.
 GigyaSdk.init({
@@ -107,6 +107,7 @@ GigyaSdk.init({
   storageKey: 'RANDOM_STRING'
   apiKey: 'INSERT_GIGYA_API_KEY',
   dataCenter: GigyaSdkDataCenterEnum.EU1,
+  linkAccountVersion: GigyaSdkLinkAccountVersions.V2,
 })
 
 // Now we can use it.
