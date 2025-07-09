@@ -137,6 +137,25 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void isSessionValid(final Promise promise) {
+        mGigya.verifySession(new GigyaCallback<GigyaApiResponse>() {
+            @Override
+            public void onSuccess(GigyaApiResponse response) {
+                try {
+                    promise.resolve(response.getErrorCode() == 0);
+                } catch (Exception e) {
+                    promise.reject("isSessionValidErrorJSON", e);
+                }
+            }
+
+            @Override
+            public void onError(GigyaError gigyaError) {
+                promise.reject("isSessionValidErrorJSON", gigyaError.getData());
+            }
+        });
+    }
+
+    @ReactMethod
     public void getAccount(final Promise promise) {
         mGigya.getAccount(true, new GigyaLoginCallback<GigyaAccount>() {
             @Override

@@ -309,7 +309,26 @@ class GigyaSdk: NSObject {
     Gigya.sharedInstance().setSession(session)
     resolve(true)
   }
-
+  
+  @objc func isSessionValid(
+    _ resolve: @escaping RCTPromiseResolveBlock,
+    rejecter reject: @escaping RCTPromiseRejectBlock
+  ) {
+    Gigya.sharedInstance().verifySession { result in
+      switch result {
+        case .success(let data):
+          let response = self.mapResponseToStruct(data: data)
+          if response?.errorCode == 0 {
+            resolve(true)
+          } else {
+            resolve(false)
+          }
+        case .failure(let isValidSessionError):
+          reject("isValidSessionErrorJSON", "{}", isValidSessionError)
+      }
+    }
+  }
+  
   @objc func getAccount(
     _ resolve: @escaping RCTPromiseResolveBlock,
     rejecter reject: @escaping RCTPromiseRejectBlock
