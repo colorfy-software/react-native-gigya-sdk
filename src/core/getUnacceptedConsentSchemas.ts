@@ -1,3 +1,5 @@
+import type { GigyaSdkRequiredConsentsKeysType } from '../types'
+
 import getAccountInfo from './getAccountInfo'
 import getRequiredConsentSchemas from './getRequiredConsentSchemas'
 
@@ -12,19 +14,24 @@ export type PreferencesType<ConsentType extends string = string, ConsentId exten
     >
 >
 
-export default function <OutputType>(): Promise<OutputType | null> {
+export default function (): Promise<GigyaSdkRequiredConsentsKeysType | null> {
   return new Promise(async (resolve, reject) => {
     try {
-      const requiredConsentSchemas = await getRequiredConsentSchemas()
-      const consentIds = requiredConsentSchemas.map((schema) => schema.key)
+      const mandatoryConsentSchemas = await getRequiredConsentSchemas()
+      const acceptanceRequiredConsentIds = mandatoryConsentSchemas.acceptanceRequired.map((schema) => schema.key)
+      const instantiationRequiredConsentIds = mandatoryConsentSchemas.instantiationRequired.map((schema) => schema.key)
 
       const preferences = (await getAccountInfo({ noUID: true }))?.preferences as PreferencesType | undefined
 
-      if (consentIds.length < 1 || !preferences) return resolve(null)
+      if ((acceptanceRequiredConsentIds.length < 1 && instantiationRequiredConsentIds.length < 1) || !preferences)
+        return resolve(null)
 
-      let output: string[] = []
+      const output: GigyaSdkRequiredConsentsKeysType = {
+        instantiationRequired: [],
+        acceptanceRequired: [],
+      }
 
-      consentIds.forEach((consentId) => {
+      acceptanceRequiredConsentIds.forEach((consentId) => {
         const [consentTypeOrId, subConsentId] = consentId.split('.')
 
         if (
@@ -32,15 +39,27 @@ export default function <OutputType>(): Promise<OutputType | null> {
           !(preferences?.[consentTypeOrId] as Omit<PreferencesType, 'isConsentGranted'> | undefined)?.[subConsentId]
             ?.isConsentGranted
         ) {
-          output = [...output, consentId]
+          output.acceptanceRequired = [...output.acceptanceRequired, consentId]
         }
       })
 
-      if (!output.length) {
+      instantiationRequiredConsentIds.forEach((consentId) => {
+        const [consentTypeOrId, subConsentId] = consentId.split('.')
+
+        if (
+          !preferences?.[consentId]?.isConsentGranted &&
+          !(preferences?.[consentTypeOrId] as Omit<PreferencesType, 'isConsentGranted'> | undefined)?.[subConsentId]
+            ?.isConsentGranted
+        ) {
+          output.instantiationRequired = [...output.instantiationRequired, consentId]
+        }
+      })
+
+      if (!output.acceptanceRequired.length && !output.instantiationRequired.length) {
         return resolve(null)
       }
 
-      resolve((output as unknown) as OutputType)
+      resolve(output)
     } catch (e) {
       reject(e)
     }

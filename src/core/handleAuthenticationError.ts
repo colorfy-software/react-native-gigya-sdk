@@ -13,9 +13,9 @@ import setSession from './setSession'
 import isGigyaError from './isGigyaError'
 import getAccountInfo from './getAccountInfo'
 import finalizeRegistration from './finalizeRegistration'
-import acceptConsentSchemas from './acceptConsentSchemas'
 import clearErrorState from '../internals/clearErrorState'
 import getConflictingAccount from './getConflictingAccount'
+import grantRequiredConsents from './grantRequiredConsents'
 import resendVerificationEmail from './resendVerificationEmail'
 import getUnacceptedConsentSchemas from './getUnacceptedConsentSchemas'
 import saveAuthenticationAttempt from '../internals/saveAuthenticationAttempt'
@@ -77,9 +77,9 @@ type OutputType = {
 const handleExpiredRegToken = (error?: GigyaSdkErrorType): Promise<InternalOutputType> =>
   new Promise(async (resolve) => {
     resolve({
+      error,
       handled: true,
       regTokenExpired: true,
-      error,
     })
   })
 
@@ -87,9 +87,9 @@ const handlePendingVerification = (error?: GigyaSdkErrorType): Promise<InternalO
   new Promise(async (resolve) => {
     await resendVerificationEmail({ noUID: true })
     resolve({
-      actionRequired: { type: 'emailVerification' },
-      handled: true,
       error,
+      handled: true,
+      actionRequired: { type: 'emailVerification' },
     })
   })
 
@@ -111,9 +111,7 @@ const handleConflictingAccount = (error?: GigyaSdkErrorType): Promise<InternalOu
       resolve({
         error,
         handled: true,
-        actionRequired: {
-          type: 'conflictingAccount',
-        },
+        actionRequired: { type: 'conflictingAccount' },
       })
     }
   })
@@ -121,11 +119,9 @@ const handleConflictingAccount = (error?: GigyaSdkErrorType): Promise<InternalOu
 const onConsentSchemasAcceptance = (options?: OptionsType): Promise<InternalOutputType> =>
   new Promise(async (resolve, reject) => {
     try {
-      const unacceptedConsentSchemas = await getUnacceptedConsentSchemas<string[]>()
-
-      if (unacceptedConsentSchemas) {
-        await acceptConsentSchemas(unacceptedConsentSchemas, { noUID: true })
-      }
+      try {
+        await grantRequiredConsents(options)
+      } catch (e) {}
 
       const account = await getAccountInfo({ noUID: true })
 
@@ -151,10 +147,7 @@ const onConsentSchemasAcceptance = (options?: OptionsType): Promise<InternalOutp
 
       await clearErrorState()
 
-      resolve({
-        handled: true,
-        account,
-      })
+      resolve({ handled: true, account })
     } catch (e) {
       reject(e)
     }
@@ -163,29 +156,24 @@ const onConsentSchemasAcceptance = (options?: OptionsType): Promise<InternalOutp
 const handlePendingRegistration = (error?: GigyaSdkErrorType, options?: OptionsType): Promise<InternalOutputType> =>
   new Promise(async (resolve, reject) => {
     try {
-      const unacceptedConsentSchemas = await getUnacceptedConsentSchemas<string[]>()
+      const unacceptedConsentSchemas = await getUnacceptedConsentSchemas()
 
-      if (unacceptedConsentSchemas?.length) {
+      if (unacceptedConsentSchemas !== null) {
         if (options?.isRegistration) {
-          const output = await onConsentSchemasAcceptance(options)
-          return resolve(output)
+          return resolve(await onConsentSchemasAcceptance(options))
         }
 
         return resolve({
-          handled: true,
-          actionRequired: {
-            type: 'acceptToS',
-            callback: onConsentSchemasAcceptance,
-          },
           error,
+          handled: true,
+          actionRequired: { type: 'acceptToS', callback: onConsentSchemasAcceptance },
         })
       }
 
       const account = await getAccountInfo({ noUID: true })
 
       if (!account.isVerified) {
-        const output = await handlePendingVerification(error)
-        return resolve(output)
+        return resolve(await handlePendingVerification(error))
       }
 
       if (!account.isRegistered && !options?.noFinalize) {
@@ -197,9 +185,9 @@ const handlePendingRegistration = (error?: GigyaSdkErrorType, options?: OptionsT
           } catch (e) {}
         }
 
-        resolve({ handled: true, account: response })
-
         await clearErrorState()
+
+        return resolve({ handled: true, account: response })
       }
 
       resolve({ handled: false, error })

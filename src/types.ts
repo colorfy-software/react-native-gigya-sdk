@@ -241,6 +241,16 @@ export interface GigyaSdkConsentSchemaType {
   legalStatements: Record<string, { documentUrl: string; purpose: string }>
 }
 
+export type GigyaSdkRequiredConsentsKeysType = {
+  acceptanceRequired: string[]
+  instantiationRequired: string[]
+}
+
+export type GigyaSdkRequiredConsentsSchemasType = {
+  acceptanceRequired: GigyaSdkConsentSchemaType[]
+  instantiationRequired: GigyaSdkConsentSchemaType[]
+}
+
 export type GigyaSdkLegalStatementsStatusType = 'Historic' | 'Published'
 
 export interface GigyaSdkLegalStatementsType {

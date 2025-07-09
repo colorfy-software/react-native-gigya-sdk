@@ -4,6 +4,7 @@ import setSession from './setSession'
 import getAccountInfo from './getAccountInfo'
 import acceptConsentSchemas from './acceptConsentSchemas'
 import finalizeRegistration from './finalizeRegistration'
+import declineConsentSchemas from './declineConsentSchemas'
 import resendVerificationEmail from './resendVerificationEmail'
 import getUnacceptedConsentSchemas from './getUnacceptedConsentSchemas'
 
@@ -13,12 +14,14 @@ export default function (options?: {
 }): Promise<GigyaSdkAccountInfoType | GigyaSdkRegisteredAccountType> {
   return new Promise(async (resolve, reject) => {
     try {
-      const unacceptedConsentSchemas = await getUnacceptedConsentSchemas<string[]>()
+      const unacceptedConsentSchemas = await getUnacceptedConsentSchemas()
 
-      if (unacceptedConsentSchemas) {
-        await acceptConsentSchemas(unacceptedConsentSchemas, {
-          noUID: true,
-        })
+      if (unacceptedConsentSchemas?.acceptanceRequired) {
+        await acceptConsentSchemas(unacceptedConsentSchemas.acceptanceRequired, { noUID: true })
+      }
+
+      if (unacceptedConsentSchemas?.instantiationRequired) {
+        await declineConsentSchemas(unacceptedConsentSchemas.instantiationRequired, { noUID: true })
       }
 
       const account = await getAccountInfo({ noUID: true })
