@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import EncryptedStorage from 'react-native-encrypted-storage'
+import SecureStorage from 'react-native-fast-secure-storage'
 import { Button, StyleSheet, Text, View } from 'react-native'
 import GigyaSdk, { GigyaSdkAccountInfoType, GigyaSdkDataCenters } from 'react-native-gigya-sdk'
 
@@ -24,7 +24,7 @@ export default function App() {
         await GigyaSdk.init({
           lang: CONFIG.LANG,
           apiKey: CONFIG.API_KEY,
-          storage: EncryptedStorage,
+          storage: SecureStorage,
           dataCenter: CONFIG.DATA_CENTER,
           storageKey: CONFIG.STORAGE_KEY,
         })
