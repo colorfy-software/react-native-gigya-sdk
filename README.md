@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="https://github.com/colorfy-software/react-native-gigya-sdk/actions">
-    <img src="https://github.com/colorfy-software/react-native-gigya-sdk/workflows/Test%20Suite/badge.svg?branch=main" alt="Current GitHub Actions build status." />
+    <img src="https://github.com/colorfy-software/react-native-gigya-sdk/actions/workflows/actions.yml/badge.svg?branch=main" alt="Current GitHub Actions build status." />
   </a>
   <a href="https://www.npmjs.org/package/react-native-gigya-sdk">
     <img src="https://badge.fury.io/js/react-native-gigya-sdk.svg" alt="Current npm package version." />

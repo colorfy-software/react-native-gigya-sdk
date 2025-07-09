@@ -951,7 +951,7 @@ PODS:
     - React
     - React-callinvoker
     - React-Core
-  - react-native-gigya-sdk (2.3.0-alpha.6):
+  - react-native-gigya-sdk (3.0.0):
     - Gigya
     - React-Core
   - React-nativeconfig (0.73.11)
@@ -1364,7 +1364,7 @@ SPEC CHECKSUMS:
   React-logger: 6e4873d1f9c54cca30f6c91a6617f8c91b75ba4c
   React-Mapbuffer: 57bf49a458398d329dad2bf8bc660e3e35b96989
   react-native-fast-secure-storage: fcf60c1f8cb19a4025f343f2c3696daf1e42a8ce
-  react-native-gigya-sdk: 4bbba843d2f8d223c02717cdc8a1f3b083bb84ed
+  react-native-gigya-sdk: b500a8859c2ec5339bf90311ee86da226e53608d
   React-nativeconfig: 8fd29a35a3e4e8c37682d976667663d834ba6165
   React-NativeModulesApple: 83d7077877f8eda8e1b6055b3f8f16f7db8463b5
   React-perflogger: 3887a05940ccd34a83457fd153fdeda509b31737
