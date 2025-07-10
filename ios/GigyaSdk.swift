@@ -49,6 +49,12 @@ class GigyaSdk: NSObject {
     )
   }
 
+  func codableToJSONString<T: Encodable>(data: T) throws -> String {
+    let jsonEncoder = JSONEncoder()
+    let jsonData = try jsonEncoder.encode(data)
+    return String(data: jsonData, encoding: .utf8)!
+  }
+  
   func handleLoginAPIError(
     error: LoginApiError<GigyaAccount>, rejecter reject: @escaping RCTPromiseRejectBlock
   ) {
