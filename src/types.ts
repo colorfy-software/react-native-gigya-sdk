@@ -97,7 +97,9 @@ export type GigyaSdkSocialProvidersType = Exclude<GigyaSdkLoginProvidersType, 'g
  * @see [Response Codes and Errors](https://help.sap.com/docs/SAP_CUSTOMER_DATA_CLOUD/8b8d6fffe113457094a17701f63e3d6a/416d41b170b21014bbc5a10ce4041860.html?locale=en-US)
  */
 export enum GigyaSdkErrorCodes {
+  NetworkError = 500026,
   ValidationError = 400009,
+  UnauthorizedUser = 403005,
   PermissionDenied = 403007,
   InvalidParameter = 400006,
   ConflictingAccount = 403043,
