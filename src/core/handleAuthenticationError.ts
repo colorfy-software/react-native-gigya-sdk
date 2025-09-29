@@ -127,8 +127,11 @@ const onConsentSchemasAcceptance = (options?: OptionsType): Promise<InternalOutp
 
       if (!account.isVerified) {
         const state = await getState()
-        const output = await handlePendingVerification(state.error)
-        return resolve(output)
+        return resolve({
+          handled: true,
+          error: state.error,
+          actionRequired: { type: 'emailVerification' },
+        })
       }
 
       if (!account.isRegistered && !options?.noFinalize) {
