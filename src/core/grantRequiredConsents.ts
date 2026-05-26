@@ -16,11 +16,11 @@ export default function (options?: {
     try {
       const unacceptedConsentSchemas = await getUnacceptedConsentSchemas()
 
-      if (unacceptedConsentSchemas?.acceptanceRequired) {
+      if (unacceptedConsentSchemas?.acceptanceRequired?.length) {
         await acceptConsentSchemas(unacceptedConsentSchemas.acceptanceRequired, { noUID: true })
       }
 
-      if (unacceptedConsentSchemas?.instantiationRequired) {
+      if (unacceptedConsentSchemas?.instantiationRequired?.length) {
         await declineConsentSchemas(unacceptedConsentSchemas.instantiationRequired, { noUID: true })
       }
 
